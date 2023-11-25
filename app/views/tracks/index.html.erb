@@ -1,0 +1,15 @@
+<%= form_with model: @track, url: tracks_path, method: :post, local: true do |form| %>
+  <%= form.text_field :track_url, placeholder: "Enter YouTube or Spotify URL" %>
+  <%= form.submit "Add Track" %>
+<% end %>
+
+<!-- Display track list -->
+<ul>
+  <% @tracks.each do |track| %>
+    <li>
+      <%= track.name %>
+      <%= link_to "Play", play_track_path(track), method: :post %>
+      <%= link_to "Pause", pause_track_path(track), method: :post %>
+    </li>
+  <% end %>
+</ul>
