@@ -76,9 +76,17 @@ class TracksController < ApplicationController
   end
 
   def fetch_spotify_track_info(track_url)
-    # Logic to fetch track information from Spotify API based on the URL
-    # Example: Using the Spotify API to fetch track details (name, duration, etc.)
-    # Return track information as a hash
+    # Extract the track ID or URI from the Spotify URL
+    track_id = track_url.split('/').last
+
+    begin
+      track = RSpotify::Track.find(track_id)
+      return { name: track.name, duration_ms: track.duration_ms } if track
+    rescue RestClient::NotFound, RestClient::BadRequest => e
+      puts "Error fetching track info from Spotify: #{e.message}"
+    end
+
+    nil  # Return nil if track information couldn't be fetched
   end
 
   def play

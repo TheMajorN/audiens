@@ -6,6 +6,9 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+ENV['SPOTIFY_CLIENT_ID'] = 'e2f723ccae984ccda8b222b5924aab62'
+ENV['SPOTIFY_CLIENT_SECRET'] = '9240f4677d5f4f7c89f4228f74b34362'
+
 module Audiens
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
