@@ -1,4 +1,5 @@
 class TracksController < ApplicationController
+include TracksHelper
   before_action :load_tracks, only: [:index]
 
   def index
@@ -12,7 +13,7 @@ class TracksController < ApplicationController
     if source
       track_info = fetch_track_info(track_params[:track_url], source)
       if track_info
-        @track = Track.new(name: track_info[:name], source: source, length: track_info[:length])
+        @track = Track.new(name: track_info[:name], source: source, length: track_info[:length], url: track_params[:track_url])
         if @track.save
           redirect_to tracks_path, notice: 'Track added successfully!'
         else
@@ -34,10 +35,6 @@ class TracksController < ApplicationController
   end
 
   def fetch_track_info(track_url, source)
-    # Logic to fetch track information based on the source (YouTube or Spotify)
-    # Use appropriate APIs or libraries to extract track details like name, duration, etc.
-    # This code depends on the APIs and how you retrieve track information
-    # Here's a basic example assuming you have methods to fetch track info
     if source == 'youtube'
       track_info = fetch_youtube_track_info(track_url)
       { name: track_info[:title], length: track_info[:duration] } if track_info
@@ -59,22 +56,6 @@ class TracksController < ApplicationController
     youtube_service.fetch_video_info(video_id)
   end
 
-  def extract_youtube_video_id(track_url)
-    # Regular expressions to match different YouTube URL formats and extract video ID
-    regex_patterns = [
-      %r{(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)},
-      %r{(?:https?:\/\/)?(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]+)}
-      # Add more patterns if needed to cover additional URL formats
-    ]
-
-    regex_patterns.each do |pattern|
-      match = track_url.match(pattern)
-      return match[1] if match && match[1]
-    end
-
-    nil  # Return nil if no video ID is found
-  end
-
   def fetch_spotify_track_info(track_url)
     # Extract the track ID or URI from the Spotify URL
     track_id = track_url.split('/').last
@@ -90,11 +71,28 @@ class TracksController < ApplicationController
   end
 
   def play
-    # Logic to play the track
+    @track = Track.find(params[:id])
+    if @track.source == 'youtube'
+      youtube_service = YoutubeService.new("AIzaSyDupsfoOrg0PrAbro_hxZqdLZ2FsSYJFlU")
+      @youtube_embed_code = youtube_service.play_youtube_track(@track.source_id)
+      # You might use @youtube_embed_code in the view to embed a YouTube player
+    elsif @track.source == 'spotify'
+      spotify_service = SpotifyService.new
+      spotify_service.play_spotify_track(@track.source_id)
+      # Implement logic to play the track using Spotify API
+    else
+      # Handle other sources if needed
+    end
   end
 
   def pause
     # Logic to pause the track
+  end
+
+  def destroy
+    @track = Track.find(params[:id])
+    @track.destroy
+    redirect_to tracks_path, notice: 'Track was successfully deleted.'
   end
 
   private

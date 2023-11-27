@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     member do
       post 'play'
       post 'pause'
+      delete 'delete', action: 'destroy', as: 'delete_track'
     end
   end
 end

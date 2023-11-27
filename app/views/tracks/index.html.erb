@@ -1,3 +1,5 @@
+<% javascript_include_tag 'application' %>
+<script src="https://www.youtube.com/iframe_api" allow='autoplay'></script>
 <%= form_with model: @track, url: tracks_path, method: :post, local: true do |form| %>
   <%= form.text_field :track_url, placeholder: "Enter YouTube or Spotify URL" %>
   <%= form.submit "Add Track" %>
@@ -5,11 +7,13 @@
 
 <!-- Display track list -->
 <ul>
-  <% @tracks.each do |track| %>
-    <li>
-      <%= track.name %>
-      <%= link_to "Play", play_track_path(track), method: :post %>
-      <%= link_to "Pause", pause_track_path(track), method: :post %>
-    </li>
-  <% end %>
+<% @tracks.each do |track| %>
+  <div class="track">
+      <li>
+        <%= track.name %>
+        <button class="play-button" data-video-id="<%= track.url %>" data-track-id="<%= track.id %>">Play</button>
+         <iframe width="640" height="390" src="<%= track.url %>" frameborder="0"></iframe>
+      </li>
+  </div>
+<% end %>
 </ul>
