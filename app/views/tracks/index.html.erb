@@ -41,8 +41,11 @@ function onYouTubeIframeAPIReady() {
     
     button.addEventListener('click', function() {
       const videoId = this.dataset.videoId;
-      // Play the corresponding video
-      players[videoId].playVideo();
+      if (players[videoId].getPlayerState() === 1) {
+        players[videoId].pauseVideo();
+      } else {
+        players[videoId].playVideo();
+      }
     });
   });
 }
