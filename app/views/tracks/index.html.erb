@@ -1,5 +1,4 @@
-<% javascript_include_tag 'application' %>
-<script src="https://www.youtube.com/iframe_api" allow='autoplay'></script>
+<script src="https://www.youtube.com/iframe_api"></script>
 <%= form_with model: @track, url: tracks_path, method: :post, local: true do |form| %>
   <%= form.text_field :track_url, placeholder: "Enter YouTube or Spotify URL" %>
   <%= form.submit "Add Track" %>
@@ -8,12 +7,47 @@
 <!-- Display track list -->
 <ul>
 <% @tracks.each do |track| %>
+<% video_id = extract_youtube_video_id(track.url) %>
   <div class="track">
       <li>
         <%= track.name %>
-        <button class="play-button" data-video-id="<%= track.url %>" data-track-id="<%= track.id %>">Play</button>
-         <iframe width="640" height="390" src="<%= track.url %>" frameborder="0"></iframe>
+        <button id="btn-<%= video_id %>" class="play-btn" data-video-id="<%= track.id %>">Play</button>
+        <iframe id="player-<%= track.id %>" width="640" height="390" src="http://www.youtube.com/embed/<%= video_id %>?enablejsapi=1" frameborder="0"></iframe>
       </li>
   </div>
 <% end %>
 </ul>
+
+<script>
+const players = {};
+
+// YouTube API callback function
+function onYouTubeIframeAPIReady() {
+  // Find all play buttons
+  const playButtons = document.querySelectorAll('.play-btn');
+
+  // Create a player for each video
+  playButtons.forEach(function(button) {
+    const videoId = button.dataset.videoId;
+    const playerDiv = document.getElementById(`player-${videoId}`);
+    
+    // Create a new YT.Player for each video
+    players[videoId] = new YT.Player(playerDiv, {
+      videoId: videoId,
+      events: {
+        'onReady': onPlayerReady
+      }
+    });
+    
+    button.addEventListener('click', function() {
+      const videoId = this.dataset.videoId;
+      // Play the corresponding video
+      players[videoId].playVideo();
+    });
+  });
+}
+function onPlayerReady(event) {
+  // Optional: You can do something when the player is ready
+}
+
+</script>
