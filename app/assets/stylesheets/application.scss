@@ -1,0 +1,79 @@
+@import 'font-awesome';
+
+.input-section {
+  margin-bottom: 20px;
+  .track-input {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  .add-track-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+}
+
+/* Track List Styles */
+.track-list {
+  list-style: none;
+  padding: 0;
+}
+
+.track-item {
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.track-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.track-name {
+  margin: 0;
+  font-size: 18px;
+}
+
+.invalid-source {
+  color: red;
+  margin: 0;
+}
+
+/* Track Controls Styles */
+.track-controls {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+
+  .play-btn,
+  .loop-btn,
+  .delete-btn {
+    margin-right: 10px;
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .volume-slider {
+    width: 100px;
+    margin-right: 10px;
+  }
+}
