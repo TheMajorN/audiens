@@ -1,4 +1,5 @@
 <script src="https://www.youtube.com/iframe_api"></script>
+
 <%= form_with model: @track, url: tracks_path, method: :post, local: true do |form| %>
   <%= form.text_field :track_url, placeholder: "Enter YouTube or Spotify URL" %>
   <%= form.submit "Add Track" %>
@@ -9,11 +10,18 @@
 <% @tracks.each do |track| %>
 <% video_id = extract_youtube_video_id(track.url) %>
   <div class="track">
+    <% if track.source == "youtube" %>
       <li>
         <%= track.name %>
-        <button id="btn-<%= video_id %>" class="play-btn" data-video-id="<%= track.id %>">Play</button>
-        <iframe id="player-<%= track.id %>" width="640" height="390" src="http://www.youtube.com/embed/<%= video_id %>?enablejsapi=1" frameborder="0"></iframe>
+        <button id="btn-<%= video_id %>" class="play-btn" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>">Play</button>
+        <input type="range" min="0" max="100" value="100" step="5" class="volume-slider" data-video-id="<%= track.id %>">
+        <div id="player-container" style="display: none;" >
+          <iframe id="player-<%= track.id %>" src="http://www.youtube.com/embed/<%= video_id %>?enablejsapi=1" frameborder="0"></iframe>
+        </div>
       </li>
+    <% else %>
+      <p>Invalid Source</p>
+    <% end %>
   </div>
 <% end %>
 </ul>
@@ -21,18 +29,18 @@
 <script>
 const players = {};
 
-// YouTube API callback function
-function onYouTubeIframeAPIReady() {
-  // Find all play buttons
+// Function to create YouTube players and associate volume sliders
+function createYouTubePlayers() {
   const playButtons = document.querySelectorAll('.play-btn');
+  const volumeSliders = document.querySelectorAll('.volume-slider');
 
-  // Create a player for each video
   playButtons.forEach(function(button) {
     const videoId = button.dataset.videoId;
     const playerDiv = document.getElementById(`player-${videoId}`);
     
-    // Create a new YT.Player for each video
     players[videoId] = new YT.Player(playerDiv, {
+      width: 0,
+      height: 0,
       videoId: videoId,
       events: {
         'onReady': onPlayerReady
@@ -41,6 +49,7 @@ function onYouTubeIframeAPIReady() {
     
     button.addEventListener('click', function() {
       const videoId = this.dataset.videoId;
+      console.log("Button video ID: " + videoId);
       if (players[videoId].getPlayerState() === 1) {
         players[videoId].pauseVideo();
       } else {
@@ -48,9 +57,29 @@ function onYouTubeIframeAPIReady() {
       }
     });
   });
+
+  volumeSliders.forEach(function(slider) {
+    slider.addEventListener('input', function() {
+      const videoId = this.dataset.videoId;
+      console.log("Button video ID: " + videoId);
+      const volume = parseInt(this.value);
+      console.log("Changed player " + videoId + " to volume: " + volume);
+      if (players[videoId]) {
+        console.log("Setting the volume!")
+        players[videoId].setVolume(volume);
+      } else {
+        console.log("Player: " + players[videoId])
+      }
+    });
+  });
 }
+
+// YouTube API callback function
+function onYouTubeIframeAPIReady() {
+  createYouTubePlayers();
+}
+
 function onPlayerReady(event) {
   // Optional: You can do something when the player is ready
 }
-
 </script>

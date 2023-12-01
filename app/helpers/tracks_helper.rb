@@ -14,4 +14,13 @@ module TracksHelper
 
     nil  # Return nil if no video ID is found
   end
+
+  def extract_spotify_track_id(track_url)
+    # Regular expression to match Spotify track URL format and extract track ID
+    spotify_pattern = %r{(?:https?:\/\/)?open\.spotify\.com\/track\/([a-zA-Z0-9]+)\b}
+
+    match = track_url.match(spotify_pattern)
+    match[1] if match
+  end
+
 end
