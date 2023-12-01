@@ -27,6 +27,12 @@ include TracksHelper
     end
   end
 
+  def destroy
+    @track = Track.find(params[:id])
+    @track.destroy
+    redirect_to tracks_path
+  end
+
   private
 
   def determine_source(track_url)
@@ -87,12 +93,6 @@ include TracksHelper
 
   def pause
     # Logic to pause the track
-  end
-
-  def destroy
-    @track = Track.find(params[:id])
-    @track.destroy
-    redirect_to tracks_path, notice: 'Track was successfully deleted.'
   end
 
   private

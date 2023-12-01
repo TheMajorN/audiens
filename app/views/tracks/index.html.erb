@@ -14,10 +14,12 @@
       <li>
         <%= track.name %>
         <button id="btn-<%= video_id %>" class="play-btn" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>">Play</button>
+              <button class="loop-btn" data-video-id="<%= track.id %>">Loop</button>
         <input type="range" min="0" max="100" value="100" step="5" class="volume-slider" data-video-id="<%= track.id %>">
         <div id="player-container" style="display: none;" >
           <iframe id="player-<%= track.id %>" src="http://www.youtube.com/embed/<%= video_id %>?enablejsapi=1" frameborder="0"></iframe>
         </div>
+        <%= button_to 'Delete', track_path(track), method: :delete, remote: true, class: 'delete-btn', data: { track_id: track.id }, confirm: 'Are you sure?' %>
       </li>
     <% else %>
       <p>Invalid Source</p>
@@ -28,11 +30,13 @@
 
 <script>
 const players = {};
+const loopStates = {};
 
 // Function to create YouTube players and associate volume sliders
 function createYouTubePlayers() {
   const playButtons = document.querySelectorAll('.play-btn');
   const volumeSliders = document.querySelectorAll('.volume-slider');
+  const loopButtons = document.querySelectorAll('.loop-btn');
 
   playButtons.forEach(function(button) {
     const videoId = button.dataset.videoId;
@@ -49,7 +53,6 @@ function createYouTubePlayers() {
     
     button.addEventListener('click', function() {
       const videoId = this.dataset.videoId;
-      console.log("Button video ID: " + videoId);
       if (players[videoId].getPlayerState() === 1) {
         players[videoId].pauseVideo();
       } else {
@@ -61,14 +64,29 @@ function createYouTubePlayers() {
   volumeSliders.forEach(function(slider) {
     slider.addEventListener('input', function() {
       const videoId = this.dataset.videoId;
-      console.log("Button video ID: " + videoId);
       const volume = parseInt(this.value);
-      console.log("Changed player " + videoId + " to volume: " + volume);
       if (players[videoId]) {
-        console.log("Setting the volume!")
         players[videoId].setVolume(volume);
-      } else {
-        console.log("Player: " + players[videoId])
+      }
+    });
+  });
+
+  loopButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      const videoId = this.dataset.videoId;
+      if (players[videoId]) {
+        loopStates[videoId] = !loopStates[videoId]; // Toggle loop state
+      }
+    });
+  });
+
+  // Event listeners for player state changes
+  Object.values(players).forEach(player => {
+    player.addEventListener('onStateChange', event => {
+      const videoId = event.target.h.g.videoId;
+      console.log("Target:" + JSON.stringify(videoId));
+      if (players[videoId].getPlayerState() === 0 && loopStates[videoId]) {
+        players[videoId].playVideo(); // Play the video again if loop is enabled
       }
     });
   });
