@@ -1,8 +1,9 @@
 <%= javascript_include_tag "application" %>
 
-<%= form_with model: @track, url: tracks_path, method: :post, local: true do |form| %>
+<%= form_with model: @track, url: tracks_path, method: :post, local: true, multipart: true do |form| %>
   <div class="input-section">
     <%= form.text_field :track_url, placeholder: "Enter YouTube or Spotify URL", class: "track-input" %>
+    <%= form.file_field :audio_file, accept: 'audio/mpeg', class: "audio-file-input" %>
     <%= form.submit "Add Track", class: "add-track-btn" %>
   </div>
 <% end %>
@@ -12,9 +13,9 @@
     <!-- Your track list -->
     <ul class="track-list">
       <% @tracks.each do |track| %>
-        <% video_id = extract_youtube_video_id(track.url) %>
         <li class="track-item">
           <% if track.source == "youtube" %>
+            <% video_id = extract_youtube_video_id(track.url) %>
             <div class="track-details">
               <div class="track-controls">
                 <button id="btn-<%= track.id %>" class="play-btn" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>"><i class="fa-solid fa-play"></i></button>
@@ -27,6 +28,12 @@
             <div id="player-container" style="display: none;">
               <iframe id="player-<%= track.id %>" src="http://www.youtube.com/embed/<%= video_id %>?enablejsapi=1" frameborder="0"></iframe>
             </div>
+          <% elsif track.source == "upload" %>
+            <audio controls id="audioPlayer">
+              <source src="<%= url_for(track.audio_file) %>" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+            <span class="track-name" data-track-id="<%= track.id %>"><%= track.name %></span>
           <% else %>
             <p class="invalid-source">Invalid Source</p>
           <% end %>

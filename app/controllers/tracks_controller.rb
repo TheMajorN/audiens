@@ -7,25 +7,43 @@ include TracksHelper
   end
 
   def create
-    track_params = params.require(:track).permit(:track_url)
-    source = determine_source(track_params[:track_url])
+    if params[:track].present?
+      track_params = params.require(:track).permit(:track_url, :audio_file)
+      source = determine_source(track_params[:track_url])
 
-    if source
-      track_info = fetch_track_info(track_params[:track_url], source)
-      if track_info
-        @track = Track.new(name: track_info[:name], source: source, length: track_info[:length], url: track_params[:track_url])
-        if @track.save
-          redirect_to tracks_path, notice: 'Track added successfully!'
+      if source
+        if track_params[:audio_file].present?
+          @track = Track.new(name: track_params[:audio_file].original_filename,
+                             source: 'upload',
+                             audio_file: track_params[:audio_file])
+
+          if @track.save
+            redirect_to tracks_path, notice: 'Uploaded track added successfully!'
+          else
+            redirect_to tracks_path, alert: 'Error adding uploaded track!'
+          end
         else
-          redirect_to tracks_path, alert: 'Error adding track!'
+          # Handle YouTube link
+          track_info = fetch_track_info(track_params[:track_url], source)
+          if track_info
+            @track = Track.new(name: track_info[:name], source: source, length: track_info[:length], url: track_params[:track_url])
+            if @track.save
+              redirect_to tracks_path, notice: 'Track added successfully!'
+            else
+              redirect_to tracks_path, alert: 'Error adding track!'
+            end
+          else
+            redirect_to tracks_path, alert: 'Could not fetch track information!'
+          end
         end
       else
-        redirect_to tracks_path, alert: 'Could not fetch track information!'
+        redirect_to tracks_path, alert: 'Invalid track URL!'
       end
     else
-      redirect_to tracks_path, alert: 'Invalid track URL!'
+      redirect_to tracks_path, alert: 'No track data provided!'
     end
   end
+
 
   def update
     @track = Track.find(params[:id])
@@ -52,6 +70,9 @@ include TracksHelper
   def determine_source(track_url)
     return 'youtube' if track_url.include?('youtube.com')
     return 'spotify' if track_url.include?('spotify.com')
+    return 'upload' if track_url.blank?
+
+    'unknown'
   end
 
   def fetch_track_info(track_url, source)
