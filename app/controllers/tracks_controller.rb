@@ -27,6 +27,20 @@ include TracksHelper
     end
   end
 
+  def update
+    @track = Track.find(params[:id])
+
+    if @track.update(track_params)
+      render json: { status: 'success', message: 'Track name updated successfully' }
+    else
+      render json: { status: 'error', message: 'Failed to update track name' }
+    end
+  end
+
+  def track_params
+    params.require(:track).permit(:name) # Adjust permitted attributes as needed
+  end
+
   def destroy
     @track = Track.find(params[:id])
     @track.destroy

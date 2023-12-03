@@ -1,5 +1,23 @@
 @import 'font-awesome';
 
+body {
+  background-color: rgb(112, 112, 112);
+}
+
+.container {
+  display: flex;
+}
+
+.left-panel {
+  flex: 1;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.right-panel {
+  flex: 1;
+}
+
 .input-section {
   margin-bottom: 20px;
   .track-input {
@@ -72,8 +90,17 @@
     }
   }
 
+  .loop-btn.loop-enabled {
+    background-color: #555; /* Change to your desired darker color */
+    /* Additional styles for the loop-enabled state */
+  }
+
   .volume-slider {
     width: 100px;
     margin-right: 10px;
   }
+}
+
+.danger {
+  color: rgb(170, 0, 0)
 }

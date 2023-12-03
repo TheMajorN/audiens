@@ -1,3 +1,5 @@
+<%= javascript_include_tag "application" %>
+
 <%= form_with model: @track, url: tracks_path, method: :post, local: true do |form| %>
   <div class="input-section">
     <%= form.text_field :track_url, placeholder: "Enter YouTube or Spotify URL", class: "track-input" %>
@@ -5,101 +7,35 @@
   </div>
 <% end %>
 
-<!-- Display track list -->
-<ul class="track-list">
-  <% @tracks.each do |track| %>
-    <% video_id = extract_youtube_video_id(track.url) %>
-    <li class="track-item">
-      <% if track.source == "youtube" %>
-        <div class="track-details">
-          <h3 class="track-name"><%= track.name %></h3>
-          <div class="track-controls">
-            <button id="btn-<%= video_id %>" class="play-btn" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>"><i class="fa-solid fa-play"></i></button>
-            <button class="loop-btn" data-video-id="<%= track.id %>">Loop</button>
-            <input type="range" min="0" max="100" value="100" step="5" class="volume-slider" data-video-id="<%= track.id %>">
+<div class="container">
+  <div class="left-panel">
+    <!-- Your track list -->
+    <ul class="track-list">
+      <% @tracks.each do |track| %>
+        <% video_id = extract_youtube_video_id(track.url) %>
+        <li class="track-item">
+          <% if track.source == "youtube" %>
+            <div class="track-details">
+              <div class="track-controls">
+                <button id="btn-<%= track.id %>" class="play-btn" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>"><i class="fa-solid fa-play"></i></button>
+                <button class="loop-btn" data-video-id="<%= track.id %>"><i class="fa-solid fa-repeat"></i></button>
+                <span class="track-name" data-track-id="<%= track.id %>"><%= track.name %></span>
+                <input type="range" min="0" max="100" value="100" step="5" class="volume-slider" style="margin-left:50px" data-video-id="<%= track.id %>">
+              </div>
+              <%= button_to raw('<i class="fa-solid danger fa-trash"></i>'), track_path(track), method: :delete, remote: true, class: 'delete-btn', data: { track_id: track.id }, confirm: 'Are you sure?' %>
+            </div>
             <div id="player-container" style="display: none;">
               <iframe id="player-<%= track.id %>" src="http://www.youtube.com/embed/<%= video_id %>?enablejsapi=1" frameborder="0"></iframe>
             </div>
-            <%= button_to 'Delete', track_path(track), method: :delete, remote: true, class: 'delete-btn', data: { track_id: track.id }, confirm: 'Are you sure?' %>
-          </div>
-        </div>
-      <% else %>
-        <p class="invalid-source">Invalid Source</p>
+          <% else %>
+            <p class="invalid-source">Invalid Source</p>
+          <% end %>
+        </li>
       <% end %>
-    </li>
-  <% end %>
-</ul>
-
-<script>
-const players = {};
-const loopStates = {};
-
-// Function to create YouTube players and associate volume sliders
-function createYouTubePlayers() {
-  const playButtons = document.querySelectorAll('.play-btn');
-  const volumeSliders = document.querySelectorAll('.volume-slider');
-  const loopButtons = document.querySelectorAll('.loop-btn');
-
-  playButtons.forEach(function(button) {
-    const videoId = button.dataset.videoId;
-    const playerDiv = document.getElementById(`player-${videoId}`);
-    
-    players[videoId] = new YT.Player(playerDiv, {
-      width: 0,
-      height: 0,
-      videoId: videoId,
-      events: {
-        'onReady': onPlayerReady
-      }
-    });
-    
-    button.addEventListener('click', function() {
-      const videoId = this.dataset.videoId;
-      if (players[videoId].getPlayerState() === 1) {
-        players[videoId].pauseVideo();
-      } else {
-        players[videoId].playVideo();
-      }
-    });
-  });
-
-  volumeSliders.forEach(function(slider) {
-    slider.addEventListener('input', function() {
-      const videoId = this.dataset.videoId;
-      const volume = parseInt(this.value);
-      if (players[videoId]) {
-        players[videoId].setVolume(volume);
-      }
-    });
-  });
-
-  loopButtons.forEach(function(button) {
-    button.addEventListener('click', function() {
-      const videoId = this.dataset.videoId;
-      if (players[videoId]) {
-        loopStates[videoId] = !loopStates[videoId]; // Toggle loop state
-      }
-    });
-  });
-
-  // Event listeners for player state changes
-  Object.values(players).forEach(player => {
-    player.addEventListener('onStateChange', event => {
-      const videoId = event.target.h.g.videoId;
-      console.log("Target:" + JSON.stringify(videoId));
-      if (players[videoId].getPlayerState() === 0 && loopStates[videoId]) {
-        players[videoId].playVideo(); // Play the video again if loop is enabled
-      }
-    });
-  });
-}
-
-// YouTube API callback function
-function onYouTubeIframeAPIReady() {
-  createYouTubePlayers();
-}
-
-function onPlayerReady(event) {
-  // Optional: You can do something when the player is ready
-}
-</script>
+    </ul>
+  </div>
+  <div class="right-panel">
+    <!-- Empty div on the right side -->
+    <!-- This div is initially empty -->
+  </div>
+</div>
