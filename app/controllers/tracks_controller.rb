@@ -22,13 +22,6 @@ include TracksHelper
           else
             redirect_to tracks_path, alert: 'Error adding uploaded track!'
           end
-        elsif source === "youtube-playlist"
-          @track = Track.new(name: track_params[:name], source: source, length: nil, url: track_params[:track_url])
-          if @track.save
-            redirect_to tracks_path, notice: 'Playlist added successfully!'
-          else
-            redirect_to tracks_path, alert: 'Error adding playlist!'
-          end
         else
           # Handle YouTube link
           track_info = fetch_track_info(track_params[:track_url], source)
@@ -76,7 +69,6 @@ include TracksHelper
 
   def determine_source(track_url)
     return 'youtube' if track_url.include?('youtube.com/watch?v=')
-    return 'youtube-playlist' if track_url.include?('youtube.com/playlist?list=')
     return 'spotify' if track_url.include?('spotify.com')
     return 'upload' if track_url.blank?
 

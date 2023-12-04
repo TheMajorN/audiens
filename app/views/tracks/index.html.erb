@@ -14,10 +14,9 @@
     <ul class="track-list">
       <% @tracks.each do |track| %>
         <li class="track-item">
-          <% if track.source == "youtube" || track.source == "upload" || track.source == "youtube-playlist" %>
+          <% if track.source == "youtube" || track.source == "upload" %>
             <% video_id = track.source == "youtube" ? extract_youtube_video_id(track.url) : nil %>
             <% audio_file = track.source == "upload" ? url_for(track.audio_file) : nil %>
-            <% playlist_id = track.source == "youtube-playlist" ? extract_youtube_playlist_id(track.url) : nil %>
             <div class="track-details">
               <div class="track-controls">
                 <button id="btn-<%= track.id %>" class="play-btn" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>"><i class="fa-solid fa-play"></i></button>
@@ -36,10 +35,6 @@
             <% if track.source == "youtube" %>
               <div id="player-container" style="display: none;">
                 <iframe id="player-<%= track.id %>" src="http://www.youtube.com/embed/<%= video_id %>?enablejsapi=1" frameborder="0"></iframe>
-              </div>
-            <% elsif track.source == "youtube-playlist" %>
-              <div class="playlist-container">
-                <iframe src="https://www.youtube.com/embed/videoseries?list=<%= playlist_id %>" title="<% track.name %>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
               </div>
             <% elsif track.source == "upload" %>
               <div id="player-container" style="display: none;">

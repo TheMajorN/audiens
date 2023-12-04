@@ -19,13 +19,4 @@ module TracksHelper
     match = track_url.match(spotify_pattern)
     match[1] if match
   end
-
-  def extract_youtube_playlist_id(track_url)
-    playlist_regex = %r{(?:https?:\/\/)?(?:www\.)?youtube\.com\/playlist\?list=([a-zA-Z0-9_-]+)}
-
-    match = track_url.match(playlist_regex)
-    return match[1] if match && match[1]
-
-    nil
-  end
 end
