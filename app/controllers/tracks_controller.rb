@@ -22,6 +22,13 @@ include TracksHelper
           else
             redirect_to tracks_path, alert: 'Error adding uploaded track!'
           end
+        elsif source === "youtube-playlist"
+          @track = Track.new(name: track_params[:name], source: source, length: nil, url: track_params[:track_url])
+          if @track.save
+            redirect_to tracks_path, notice: 'Playlist added successfully!'
+          else
+            redirect_to tracks_path, alert: 'Error adding playlist!'
+          end
         else
           # Handle YouTube link
           track_info = fetch_track_info(track_params[:track_url], source)
@@ -68,7 +75,8 @@ include TracksHelper
   private
 
   def determine_source(track_url)
-    return 'youtube' if track_url.include?('youtube.com')
+    return 'youtube' if track_url.include?('youtube.com/watch?v=')
+    return 'youtube-playlist' if track_url.include?('youtube.com/playlist?list=')
     return 'spotify' if track_url.include?('spotify.com')
     return 'upload' if track_url.blank?
 
@@ -109,25 +117,6 @@ include TracksHelper
     end
 
     nil  # Return nil if track information couldn't be fetched
-  end
-
-  def play
-    @track = Track.find(params[:id])
-    if @track.source == 'youtube'
-      youtube_service = YoutubeService.new("AIzaSyDupsfoOrg0PrAbro_hxZqdLZ2FsSYJFlU")
-      @youtube_embed_code = youtube_service.play_youtube_track(@track.source_id)
-      # You might use @youtube_embed_code in the view to embed a YouTube player
-    elsif @track.source == 'spotify'
-      spotify_service = SpotifyService.new
-      spotify_service.play_spotify_track(@track.source_id)
-      # Implement logic to play the track using Spotify API
-    else
-      # Handle other sources if needed
-    end
-  end
-
-  def pause
-    # Logic to pause the track
   end
 
   private

@@ -1,5 +1,11 @@
 @import 'font-awesome';
 
+:root {
+  --light-mode-primary: #3498db;
+  --light-mode-secondary: #2ecc71;
+  --light-mode-text: #333333;
+}
+
 body {
   background-color: rgb(112, 112, 112);
 }
@@ -73,6 +79,7 @@ body {
 
 /* Track Controls Styles */
 .track-controls {
+  width: 100%;
   margin-top: 10px;
   display: flex;
   align-items: center;
@@ -90,9 +97,12 @@ body {
     }
   }
 
+  .delete-btn-container {
+    margin-left: auto;
+  }
+
   .loop-btn.loop-enabled {
-    background-color: #555; /* Change to your desired darker color */
-    /* Additional styles for the loop-enabled state */
+    background-color: #555;
   }
 
   .volume-slider {

@@ -8,34 +8,49 @@ function createYouTubePlayers() {
   const loopButtons = document.querySelectorAll('.loop-btn');
 
   playButtons.forEach(function(button) {
+    const videoSource = button.getAttribute('data-video-source');
     const videoId = button.dataset.videoId;
     const playerDiv = document.getElementById(`player-${videoId}`);
     
-    players[videoId] = new YT.Player(playerDiv, {
-      width: 0,
-      height: 0,
-      videoId: videoId,
-      events: {
-        'onReady': function(event) {
-          const volumeSlider = document.querySelector(`.volume-slider[data-video-id="${videoId}"]`);
-          const initialVolume = parseInt(volumeSlider.value);
-          event.target.setVolume(initialVolume);
-          onPlayerReady(event);
+    if (videoSource === 'youtube') {
+      players[videoId] = new YT.Player(playerDiv, {
+        width: 0,
+        height: 0,
+        videoId: videoId,
+        events: {
+          'onReady': function(event) {
+            const volumeSlider = document.querySelector(`.volume-slider[data-video-id="${videoId}"]`);
+            const initialVolume = parseInt(volumeSlider.value);
+            event.target.setVolume(initialVolume);
+            onPlayerReady(event);
+          }
         }
-      }
-    });
+      });
+    }
     
     button.addEventListener('click', function() {
       const videoId = this.dataset.videoId;
-      const button = document.getElementById("btn-" + videoId)
-      if (players[videoId].getPlayerState() === 1) {
-        players[videoId].pauseVideo();
-        button.querySelector('i').classList.remove('fa-pause');
-        button.querySelector('i').classList.add('fa-play');
-      } else {
-        players[videoId].playVideo();
-        button.querySelector('i').classList.remove('fa-play');
-        button.querySelector('i').classList.add('fa-pause');
+      const button = document.getElementById("btn-" + videoId);
+      const videoSource = button.getAttribute('data-video-source');
+      const audioPlayer = document.getElementById(`player-${videoId}`);
+
+      if (videoSource === 'youtube') {
+        if (players[videoId].getPlayerState() === 1) {
+          players[videoId].pauseVideo();
+          togglePauseIcon(button);
+        } else {
+          players[videoId].playVideo();
+          togglePlayIcon(button);
+        }
+      }
+      else if (videoSource === 'upload') {
+        if (audioPlayer.paused) {
+          audioPlayer.play();
+          togglePauseIcon(button);
+        } else {
+          audioPlayer.pause();
+          togglePlayIcon(button);
+        }
       }
     });
   });
@@ -43,23 +58,42 @@ function createYouTubePlayers() {
   volumeSliders.forEach(function(slider) {
     slider.addEventListener('input', function() {
       const videoId = this.dataset.videoId;
-      const volume = parseInt(this.value);
-      if (players[videoId]) {
-        players[videoId].setVolume(volume);
+      const videoSource = slider.getAttribute('data-video-source');
+      const audioPlayer = document.getElementById(`player-${videoId}`);
+
+      if (videoSource === 'youtube') {
+        const volume = parseInt(this.value);
+        if (players[videoId]) {
+          players[videoId].setVolume(volume);
+        }
+      }
+      else if (videoSource === 'upload') {
+        audioPlayer.volume = parseFloat(this.value);
       }
     });
   });
 
   loopButtons.forEach(function(button) {
     button.addEventListener('click', function(event) {
-      const clickedButton = event.target.closest('.loop-btn');
+      const videoId = this.dataset.videoId;
+      const button = document.getElementById("btn-" + videoId);
+      const videoSource = button.getAttribute('data-video-source');
+      const audioPlayer = document.getElementById(`player-${videoId}`);
 
-      if (clickedButton) {
-        const videoId = clickedButton.dataset.videoId;
-        if (players[videoId]) {
-          loopStates[videoId] = !loopStates[videoId];
-          clickedButton.classList.toggle('loop-enabled', loopStates[videoId]);
+      if (videoSource === 'youtube') { 
+        const clickedButton = event.target.closest('.loop-btn');
+        if (clickedButton) {
+          const videoId = clickedButton.dataset.videoId;
+          if (players[videoId]) {
+            loopStates[videoId] = !loopStates[videoId];
+            clickedButton.classList.toggle('loop-enabled', loopStates[videoId]);
+          }
         }
+      }
+      else if (videoSource === 'upload') {
+        const clickedButton = event.target.closest('.loop-btn');
+        audioPlayer.loop = !audioPlayer.loop;
+        clickedButton.classList.toggle('loop-enabled', audioPlayer.loop);
       }
     });
   });
@@ -146,4 +180,14 @@ function onYouTubeIframeAPIReady() {
 
 function onPlayerReady(event) {
   // Optional: Do something when the player is ready
+}
+
+function togglePlayIcon(button) {
+  button.querySelector('i').classList.remove('fa-play');
+  button.querySelector('i').classList.add('fa-pause');
+}
+
+function togglePauseIcon(button) {
+  button.querySelector('i').classList.remove('fa-pause');
+  button.querySelector('i').classList.add('fa-play');
 }
