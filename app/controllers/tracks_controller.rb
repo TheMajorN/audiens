@@ -8,14 +8,15 @@ include TracksHelper
 
   def create
     if params[:track].present?
-      track_params = params.require(:track).permit(:track_url, :audio_file)
+      track_params = params.require(:track).permit(:track_url, :audio_file, :sound)
       source = determine_source(track_params[:track_url])
 
       if source
         if track_params[:audio_file].present?
           @track = Track.new(name: track_params[:audio_file].original_filename,
                              source: 'upload',
-                             audio_file: track_params[:audio_file])
+                             audio_file: track_params[:audio_file],
+                             sound: track_params[:sound])
 
           if @track.save
             redirect_to tracks_path, notice: 'Uploaded track added successfully!'
@@ -26,7 +27,11 @@ include TracksHelper
           # Handle YouTube link
           track_info = fetch_track_info(track_params[:track_url], source)
           if track_info
-            @track = Track.new(name: track_info[:name], source: source, length: track_info[:length], url: track_params[:track_url])
+            @track = Track.new(name: track_info[:name],
+                              source: source,
+                              length: track_info[:length],
+                              url: track_params[:track_url],
+                              sound: track_params[:sound])
             if @track.save
               redirect_to tracks_path, notice: 'Track added successfully!'
             else
@@ -56,7 +61,7 @@ include TracksHelper
   end
 
   def track_params
-    params.require(:track).permit(:name) # Adjust permitted attributes as needed
+    params.require(:track).permit(:name)
   end
 
   def destroy

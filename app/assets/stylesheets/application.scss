@@ -15,9 +15,12 @@ body {
 }
 
 .left-panel {
+  background-color: rgb(87, 87, 87);
+  border-radius: 10px;
   flex: 1;
   padding-right: 20px;
   padding-left: 20px;
+  margin-right: 5px;
 }
 
 .right-panel {
@@ -25,6 +28,7 @@ body {
 }
 
 .input-section {
+  margin-top: 20px;
   margin-bottom: 20px;
   .track-input {
     width: 300px;
@@ -33,7 +37,8 @@ body {
     border-radius: 5px;
     border: 1px solid #ccc;
   }
-  .add-track-btn {
+  .add-track-btn,
+  .add-sound-effect-btn {
     padding: 10px 20px;
     font-size: 16px;
     border-radius: 5px;
@@ -113,4 +118,55 @@ body {
 
 .danger {
   color: rgb(170, 0, 0)
+}
+
+.right-panel {
+  background-color: rgb(87, 87, 87);
+  border-radius: 10px;
+  flex: 1;
+  padding-right: 20px;
+  padding-left: 20px;
+  margin-left: 5px;
+}
+
+.sound-effects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust as needed */
+  gap: 10px;
+}
+
+.sound-effect-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 130px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+}
+
+.sound-effect-item .play-btn {
+  width: 50%;
+  height: 50%;
+  border: 0px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sound-effect-item .play-btn i {
+  font-size: 30px;
+}
+
+.sound-effect-item .volume-slider {
+  width: 75%;
+}
+
+.sound-effect-item .track-name {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
 }

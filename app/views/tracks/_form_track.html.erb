@@ -1,0 +1,8 @@
+<%= form_with model: @track, url: tracks_path, method: :post, local: true, multipart: true do |form| %>
+  <div class="input-section">
+    <%= form.text_field :track_url, placeholder: "Enter YouTube or Spotify URL", class: "track-input" %>
+    <%= form.file_field :audio_file, accept: 'audio/mpeg', class: "audio-file-input" %>
+    <%= form.hidden_field :sound, value: false %>
+    <%= form.submit "Add Track", class: "add-track-btn" %>
+  </div>
+<% end %>

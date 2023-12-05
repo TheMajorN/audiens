@@ -29,7 +29,9 @@ function createYouTubePlayers() {
     }
     
     button.addEventListener('click', function() {
+      console.log("Play button clicked");
       const videoId = this.dataset.videoId;
+      console.log(videoId);
       const button = document.getElementById("btn-" + videoId);
       const videoSource = button.getAttribute('data-video-source');
       const audioPlayer = document.getElementById(`player-${videoId}`);

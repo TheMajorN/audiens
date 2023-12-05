@@ -1,37 +1,67 @@
 <%= javascript_include_tag "application" %>
 
-<%= form_with model: @track, url: tracks_path, method: :post, local: true, multipart: true do |form| %>
-  <div class="input-section">
-    <%= form.text_field :track_url, placeholder: "Enter YouTube or Spotify URL", class: "track-input" %>
-    <%= form.file_field :audio_file, accept: 'audio/mpeg', class: "audio-file-input" %>
-    <%= form.submit "Add Track", class: "add-track-btn" %>
-  </div>
-<% end %>
-
 <div class="container">
   <div class="left-panel">
-    <!-- Your track list -->
+    <%= render 'tracks/form_track' %>
+    <!-- Track list -->
     <ul class="track-list">
-      <% @tracks.each do |track| %>
-        <li class="track-item">
-          <% if track.source == "youtube" || track.source == "upload" %>
-            <% video_id = track.source == "youtube" ? extract_youtube_video_id(track.url) : nil %>
-            <% audio_file = track.source == "upload" ? url_for(track.audio_file) : nil %>
-            <div class="track-details">
-              <div class="track-controls">
-                <button id="btn-<%= track.id %>" class="play-btn" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>"><i class="fa-solid fa-play"></i></button>
-                <button class="loop-btn" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>"><i class="fa-solid fa-repeat"></i></button>
-                <span class="track-name" data-track-id="<%= track.id %>"><%= track.name %></span>
-                <% if track.source == "youtube" %>
-                  <input type="range" min="0" max="100" value="100" step="5" class="volume-slider" style="margin-left:50px" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>">
-                <% elsif track.source == "upload" %>
-                  <input type="range" min="0" max="1" value="1" step="0.1" class="volume-slider" style="margin-left:50px" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>">
-                <% end %>
-                <div class="delete-btn-container">
-                  <%= button_to raw('<i class="fa-solid danger fa-trash"></i>'), track_path(track), method: :delete, remote: true, class: 'delete-btn', data: { track_id: track.id }, confirm: 'Are you sure?' %>
+      <% @tracks&.each do |track| %>
+        <% if track.sound == false %>
+          <li class="track-item">
+            <% if track.source == "youtube" || track.source == "upload" %>
+              <% video_id = track.source == "youtube" ? extract_youtube_video_id(track.url) : nil %>
+              <% audio_file = track.source == "upload" ? url_for(track.audio_file) : nil %>
+              <div class="track-details">
+                <div class="track-controls">
+                  <button id="btn-<%= track.id %>" class="play-btn" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>"><i class="fa-solid fa-play"></i></button>
+                  <button class="loop-btn" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>"><i class="fa-solid fa-repeat"></i></button>
+                  <span class="track-name" data-track-id="<%= track.id %>"><%= track.name %></span>
+                  <% if track.source == "youtube" %>
+                    <input type="range" min="0" max="100" value="100" step="5" class="volume-slider" style="margin-left:50px" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>">
+                  <% elsif track.source == "upload" %>
+                    <input type="range" min="0" max="1" value="1" step="0.1" class="volume-slider" style="margin-left:50px" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>">
+                  <% end %>
+                  <div class="delete-btn-container">
+                    <%= button_to raw('<i class="fa-solid danger fa-trash"></i>'), track_path(track), method: :delete, remote: true, class: 'delete-btn', data: { track_id: track.id }, confirm: 'Are you sure?' %>
+                  </div>
                 </div>
               </div>
-            </div>
+              <% if track.source == "youtube" %>
+                <div id="player-container" style="display: none;">
+                  <iframe id="player-<%= track.id %>" src="http://www.youtube.com/embed/<%= video_id %>?enablejsapi=1" frameborder="0"></iframe>
+                </div>
+              <% elsif track.source == "upload" %>
+                <div id="player-container" style="display: none;">
+                  <audio controls id="player-<%= track.id %>">
+                    <source src="<%= audio_file %>" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                  </audio>
+                </div>
+              <% end %>
+            <% else %>
+              <p class="invalid-source">Invalid Source</p>
+            <% end %>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+  <div class="right-panel">
+    <%= render 'tracks/form_sound' %>
+    <!-- Sound Effects Grid -->
+    <div class="sound-effects-grid">
+      <% @tracks&.each do |track| %>
+        <% if track.sound == true %>
+          <% video_id = track.source == "youtube" ? extract_youtube_video_id(track.url) : nil %>
+          <% audio_file = track.source == "upload" ? url_for(track.audio_file) : nil %>
+          <div class="sound-effect-item">
+            <button id="btn-<%= track.id %>" class="play-btn" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>"><i class="fa-solid fa-play"></i></button>
+            <span class="track-name" data-track-id="<%= track.id %>"><%= track.name %></span>
+            <% if track.source == "youtube" %>
+              <input type="range" min="0" max="100" value="100" step="5" class="volume-slider" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>">
+            <% elsif track.source == "upload" %>
+              <input type="range" min="0" max="1" value="1" step="0.1" class="volume-slider" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>">
+            <% end %>
             <% if track.source == "youtube" %>
               <div id="player-container" style="display: none;">
                 <iframe id="player-<%= track.id %>" src="http://www.youtube.com/embed/<%= video_id %>?enablejsapi=1" frameborder="0"></iframe>
@@ -44,15 +74,9 @@
                 </audio>
               </div>
             <% end %>
-          <% else %>
-            <p class="invalid-source">Invalid Source</p>
-          <% end %>
-        </li>
+          </div>
+        <% end %>
       <% end %>
-    </ul>
-  </div>
-  <div class="right-panel">
-    <!-- Empty div on the right side -->
-    <!-- This div is initially empty -->
+    </div>
   </div>
 </div>
