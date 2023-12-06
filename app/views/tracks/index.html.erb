@@ -74,6 +74,9 @@
                 </audio>
               </div>
             <% end %>
+            <div class="delete-btn-container">
+              <%= button_to raw('<i class="fa-solid danger fa-trash"></i>'), track_path(track), method: :delete, remote: true, class: 'delete-btn', data: { track_id: track.id }, confirm: 'Are you sure?' %>
+            </div>
           </div>
         <% end %>
       <% end %>
