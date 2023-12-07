@@ -136,6 +136,7 @@ body {
 }
 
 .sound-effect-item {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -169,4 +170,17 @@ body {
   margin-top: 10px;
   font-size: 14px;
   font-weight: bold;
+}
+
+.sound-effect-item .delete-btn-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.sound-effect-item .delete-btn-container .delete-btn {
+  font-size: 10px;
+  border: 0px;
+  border-radius: 5px;
+  cursor: pointer;
 }
