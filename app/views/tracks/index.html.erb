@@ -81,5 +81,24 @@
         <% end %>
       <% end %>
     </div>
+    <div class="folders-section">
+      <h2>All Folders</h2>
+      <div class="folder-items">
+        <% @folders&.each do |folder| %>
+          <div class="folder-item">
+            <i class="fas fa-folder"></i> <!-- Font Awesome folder icon -->
+            <span class="folder-name"><%= folder.name %></span>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Form to add a new folder -->
+      <%= form_with model: @folder, url: folders_path, method: :post, local: true, html: { id: 'new-folder-form' } do |form| %>
+        <div class="new-folder-section">
+          <%= form.text_field :name, placeholder: "Enter Folder Name" %>
+          <%= form.submit "Add Folder", class: "add-folder-btn" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

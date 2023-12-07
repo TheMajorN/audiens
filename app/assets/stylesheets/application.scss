@@ -184,3 +184,36 @@ body {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.folders-section {
+  margin-top: 20px;
+}
+
+/* Folder items */
+.folder-items {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.folder-item {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 8px 16px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.folder-item i {
+  margin-right: 10px;
+}
+
+.folder-name {
+  font-weight: bold;
+}
+
+/* Form for new folder */
+.new-folder-section {
+  margin-top: 20px;
+}

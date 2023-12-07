@@ -1,3 +1,7 @@
+//= require jquery
+//= require jquery_ujs
+//= require select2
+
 const players = {};
 const loopStates = {};
 
@@ -193,3 +197,26 @@ function togglePauseIcon(button) {
   button.querySelector('i').classList.remove('fa-pause');
   button.querySelector('i').classList.add('fa-play');
 }
+
+$(document).ready(function() {
+  $('#new-folder-form').on('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    var formData = $(this).serialize(); // Serialize form data
+
+    $.ajax({
+      type: 'POST',
+      url: $(this).attr('action'),
+      data: formData,
+      success: function(response) {
+        // Handle success response (if needed)
+        console.log('Folder created successfully');
+        // You can update the folder list here if required
+      },
+      error: function(xhr, status, error) {
+        // Handle error response (if needed)
+        console.error('Error creating folder:', error);
+      }
+    });
+  });
+});

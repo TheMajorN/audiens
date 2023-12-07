@@ -3,6 +3,7 @@ include TracksHelper
   before_action :load_tracks, only: [:index]
 
   def index
+    @folders = Folder.all
     @track = Track.new
   end
 
