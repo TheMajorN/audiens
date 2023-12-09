@@ -195,6 +195,13 @@ $(document).ready(function() {
       }
     });
   });
+
+  $('#reset-folder-filters').on('click', function() {
+    const folderId = $(this).data('folder-id');
+
+    // Show all sound-effect-items
+    $('.sound-effect-item').show();
+  });
 });
 
 document.addEventListener('DOMContentLoaded', function() {
