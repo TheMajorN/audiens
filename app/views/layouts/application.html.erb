@@ -7,7 +7,7 @@
     <%= csp_meta_tag %>
 
     <%= javascript_include_tag 'application' %>
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_importmap_tags %>
   </head>
 
@@ -16,3 +16,5 @@
   </body>
 </html>
 <script src="https://www.youtube.com/iframe_api" allow='autoplay'></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>

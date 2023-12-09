@@ -9,7 +9,7 @@ class FoldersController < ApplicationController
     @folder = Folder.find_or_create_by(name: params[:folder][:name])
 
     if @folder.save
-      render json: @folder, status: :created
+      redirect_to tracks_path, notice: 'Uploaded track added successfully!'
     else
       render json: @folder.errors, status: :unprocessable_entity
     end

@@ -10,6 +10,7 @@ function createYouTubePlayers() {
   const playButtons = document.querySelectorAll('.play-btn');
   const volumeSliders = document.querySelectorAll('.volume-slider');
   const loopButtons = document.querySelectorAll('.loop-btn');
+  const folderSelections = document.querySelectorAll('.folder-choice');
 
   playButtons.forEach(function(button) {
     const videoSource = button.getAttribute('data-video-source');
@@ -102,6 +103,13 @@ function createYouTubePlayers() {
         clickedButton.classList.toggle('loop-enabled', audioPlayer.loop);
       }
     });
+  });
+
+  folderSelections.forEach(function(selector) {
+    const videoId = selector.getAttribute('data-track-id');
+    const selectorId = document.getElementById(`select-folders-${videoId}`);
+    
+    $(selectorId).select2();
   });
 
   // Event listeners for player state changes
@@ -197,26 +205,3 @@ function togglePauseIcon(button) {
   button.querySelector('i').classList.remove('fa-pause');
   button.querySelector('i').classList.add('fa-play');
 }
-
-$(document).ready(function() {
-  $('#new-folder-form').on('submit', function(event) {
-    event.preventDefault(); // Prevent default form submission
-
-    var formData = $(this).serialize(); // Serialize form data
-
-    $.ajax({
-      type: 'POST',
-      url: $(this).attr('action'),
-      data: formData,
-      success: function(response) {
-        // Handle success response (if needed)
-        console.log('Folder created successfully');
-        // You can update the folder list here if required
-      },
-      error: function(xhr, status, error) {
-        // Handle error response (if needed)
-        console.error('Error creating folder:', error);
-      }
-    });
-  });
-});

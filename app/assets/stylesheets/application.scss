@@ -1,4 +1,5 @@
 @import 'font-awesome';
+@import "select2.min.css";
 
 :root {
   --light-mode-primary: #3498db;
@@ -216,4 +217,20 @@ body {
 /* Form for new folder */
 .new-folder-section {
   margin-top: 20px;
+}
+
+#select-folders {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 14px;
+  color: #333;
+  outline: none; /* Remove default outline */
+  cursor: pointer;
+}
+
+#select-folders option {
+  padding: 5px;
 }

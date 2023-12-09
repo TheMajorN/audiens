@@ -74,6 +74,11 @@
                 </audio>
               </div>
             <% end %>
+            <select id="select-folders-<%= track.id %>" class="folder-choice" multiple="multiple" data-track-id="<%= track.id %>">
+              <% @folders&.each do |folder| %>
+                <option value="<%= folder.id %>"><%= folder.name %></option>
+              <% end %>
+            </select>
             <div class="delete-btn-container">
               <%= button_to raw('<i class="fa-solid danger fa-trash"></i>'), track_path(track), method: :delete, remote: true, class: 'delete-btn', data: { track_id: track.id }, confirm: 'Are you sure?' %>
             </div>
@@ -85,17 +90,15 @@
       <h2>All Folders</h2>
       <div class="folder-items">
         <% @folders&.each do |folder| %>
-          <div class="folder-item">
-            <i class="fas fa-folder"></i> <!-- Font Awesome folder icon -->
+          <div class="folder-item" data-folder-id="<%= folder.id %>">
+            <i class="fas fa-folder"></i>
             <span class="folder-name"><%= folder.name %></span>
           </div>
         <% end %>
       </div>
-
-      <!-- Form to add a new folder -->
       <%= form_with model: @folder, url: folders_path, method: :post, local: true, html: { id: 'new-folder-form' } do |form| %>
         <div class="new-folder-section">
-          <%= form.text_field :name, placeholder: "Enter Folder Name" %>
+          <%= form.text_field :name, placeholder: "Enter Folder Name", name: 'folder[name]' %>
           <%= form.submit "Add Folder", class: "add-folder-btn" %>
         </div>
       <% end %>
