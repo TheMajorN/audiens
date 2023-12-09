@@ -87,21 +87,25 @@
       <% end %>
     </div>
     <div class="folders-section">
-      <h2>All Folders</h2>
+      <div class="add-folder-bar">
+        <span class="add-folder-icon"><i class="fas fa-plus"></i> New Folder</span>
+        <div class="add-folder-input hidden">
+          <%= form_with model: @folder, url: folders_path, method: :post, local: true, html: { id: 'new-folder-form' } do |form| %>
+            <div class="new-folder-section">
+              <%= form.text_field :name, placeholder: "Enter Folder Name", name: 'folder[name]', class: 'new-folder-name-input' %>
+              <%= form.submit "Add Folder", class: "add-folder-btn" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
       <div class="folder-items">
         <% @folders&.each do |folder| %>
           <div class="folder-item" data-folder-id="<%= folder.id %>">
-            <i class="fas fa-folder"></i>
+            <span class="folder-icon"><i class="fas fa-folder"></i></span>
             <span class="folder-name"><%= folder.name %></span>
           </div>
         <% end %>
       </div>
-      <%= form_with model: @folder, url: folders_path, method: :post, local: true, html: { id: 'new-folder-form' } do |form| %>
-        <div class="new-folder-section">
-          <%= form.text_field :name, placeholder: "Enter Folder Name", name: 'folder[name]' %>
-          <%= form.submit "Add Folder", class: "add-folder-btn" %>
-        </div>
-      <% end %>
     </div>
   </div>
 </div>

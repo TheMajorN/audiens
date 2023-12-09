@@ -5,18 +5,17 @@
 const players = {};
 const loopStates = {};
 
-// Function to create YouTube players and associate volume sliders
 function createYouTubePlayers() {
   const playButtons = document.querySelectorAll('.play-btn');
   const volumeSliders = document.querySelectorAll('.volume-slider');
   const loopButtons = document.querySelectorAll('.loop-btn');
   const folderSelections = document.querySelectorAll('.folder-choice');
 
-  playButtons.forEach(function(button) {
+  playButtons.forEach(button => {
     const videoSource = button.getAttribute('data-video-source');
     const videoId = button.dataset.videoId;
     const playerDiv = document.getElementById(`player-${videoId}`);
-    
+
     if (videoSource === 'youtube') {
       players[videoId] = new YT.Player(playerDiv, {
         width: 0,
@@ -32,11 +31,9 @@ function createYouTubePlayers() {
         }
       });
     }
-    
+
     button.addEventListener('click', function() {
-      console.log("Play button clicked");
       const videoId = this.dataset.videoId;
-      console.log(videoId);
       const button = document.getElementById("btn-" + videoId);
       const videoSource = button.getAttribute('data-video-source');
       const audioPlayer = document.getElementById(`player-${videoId}`);
@@ -49,8 +46,7 @@ function createYouTubePlayers() {
           players[videoId].playVideo();
           togglePlayIcon(button);
         }
-      }
-      else if (videoSource === 'upload') {
+      } else if (videoSource === 'upload') {
         if (audioPlayer.paused) {
           audioPlayer.play();
           togglePauseIcon(button);
@@ -62,7 +58,7 @@ function createYouTubePlayers() {
     });
   });
 
-  volumeSliders.forEach(function(slider) {
+  volumeSliders.forEach(slider => {
     slider.addEventListener('input', function() {
       const videoId = this.dataset.videoId;
       const videoSource = slider.getAttribute('data-video-source');
@@ -73,21 +69,20 @@ function createYouTubePlayers() {
         if (players[videoId]) {
           players[videoId].setVolume(volume);
         }
-      }
-      else if (videoSource === 'upload') {
+      } else if (videoSource === 'upload') {
         audioPlayer.volume = parseFloat(this.value);
       }
     });
   });
 
-  loopButtons.forEach(function(button) {
+  loopButtons.forEach(button => {
     button.addEventListener('click', function(event) {
       const videoId = this.dataset.videoId;
       const button = document.getElementById("btn-" + videoId);
       const videoSource = button.getAttribute('data-video-source');
       const audioPlayer = document.getElementById(`player-${videoId}`);
 
-      if (videoSource === 'youtube') { 
+      if (videoSource === 'youtube') {
         const clickedButton = event.target.closest('.loop-btn');
         if (clickedButton) {
           const videoId = clickedButton.dataset.videoId;
@@ -96,8 +91,7 @@ function createYouTubePlayers() {
             clickedButton.classList.toggle('loop-enabled', loopStates[videoId]);
           }
         }
-      }
-      else if (videoSource === 'upload') {
+      } else if (videoSource === 'upload') {
         const clickedButton = event.target.closest('.loop-btn');
         audioPlayer.loop = !audioPlayer.loop;
         clickedButton.classList.toggle('loop-enabled', audioPlayer.loop);
@@ -105,19 +99,18 @@ function createYouTubePlayers() {
     });
   });
 
-  folderSelections.forEach(function(selector) {
+  folderSelections.forEach(selector => {
     const videoId = selector.getAttribute('data-track-id');
     const selectorId = document.getElementById(`select-folders-${videoId}`);
-    
+
     $(selectorId).select2();
   });
 
-  // Event listeners for player state changes
   Object.values(players).forEach(player => {
     player.addEventListener('onStateChange', event => {
       const videoId = event.target.h.g.videoId;
       if (players[videoId].getPlayerState() === 0 && loopStates[videoId]) {
-        players[videoId].playVideo(); // Play the video again if loop is enabled
+        players[videoId].playVideo();
       }
     });
   });
@@ -126,11 +119,11 @@ function createYouTubePlayers() {
 document.addEventListener('DOMContentLoaded', function() {
   const trackNames = document.querySelectorAll('.track-name');
 
-  trackNames.forEach(function(trackName) {
+  trackNames.forEach(trackName => {
     trackName.addEventListener('click', function() {
       const currentText = this.textContent;
       const trackId = this.getAttribute('data-track-id');
-      
+
       const inputField = document.createElement('input');
       inputField.type = 'text';
       inputField.value = currentText;
@@ -162,20 +155,19 @@ document.addEventListener('DOMContentLoaded', function() {
       },
       body: JSON.stringify({ track: { name: newValue } })
     })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error('Network response was not ok.');
-    })
-    .then(data => {
-      console.log(data); // Handle success or error messages
-      // Replace input field with updated track name
-      inputField.replaceWith(createTrackNameSpan(newValue, trackId));
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Network response was not ok.');
+      })
+      .then(data => {
+        console.log(data);
+        inputField.replaceWith(createTrackNameSpan(newValue, trackId));
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }
 
   function createTrackNameSpan(name, trackId) {
@@ -187,7 +179,36 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-// YouTube API callback function
+$(document).ready(function() {
+  // Click event for folder items
+  $('.folder-item').on('click', function() {
+    const folderId = $(this).data('folder-id');
+
+    // Hide all sound-effect-items
+    $('.sound-effect-item').hide();
+
+    // Show sound-effect-items that have the selected folder-choice
+    $('.sound-effect-item .folder-choice').each(function() {
+      const selectedFolders = $(this).val();
+      if (selectedFolders && selectedFolders.includes(folderId.toString())) {
+        $(this).closest('.sound-effect-item').show();
+      }
+    });
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const addFolderBar = document.querySelector('.add-folder-bar');
+  const addFolderInput = document.querySelector('.add-folder-input');
+
+  // Toggle add folder input on clicking the bar
+  addFolderBar.addEventListener('click', function() {
+    addFolderInput.style.transition = 'display 0.5s ease-in-out';
+    addFolderInput.style.display = addFolderInput.style.display === 'none' ? 'flex' : 'none';
+
+  });
+});
+
 function onYouTubeIframeAPIReady() {
   createYouTubePlayers();
 }
@@ -197,11 +218,13 @@ function onPlayerReady(event) {
 }
 
 function togglePlayIcon(button) {
-  button.querySelector('i').classList.remove('fa-play');
-  button.querySelector('i').classList.add('fa-pause');
+  const icon = button.querySelector('i');
+  icon.classList.remove('fa-play');
+  icon.classList.add('fa-pause');
 }
 
 function togglePauseIcon(button) {
-  button.querySelector('i').classList.remove('fa-pause');
-  button.querySelector('i').classList.add('fa-play');
+  const icon = button.querySelector('i');
+  icon.classList.remove('fa-pause');
+  icon.classList.add('fa-play');
 }

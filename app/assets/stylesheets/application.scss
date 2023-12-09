@@ -188,10 +188,67 @@ body {
 
 .folders-section {
   margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  background-color: #696969;
 }
 
-/* Folder items */
+.add-folder-bar {
+  padding: 10px;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  color: white;
+  background-color: #505050;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  transition: 0.5s ease-in-out;
+}
+
+.add-folder-bar:hover {
+  background: #272727;
+  transition: 0.5s ease-in-out;
+}
+
+.add-folder-icon {
+  width: 100%;
+}
+
+.add-folder-icon i {
+  padding: 3px;
+  background-color: #131313;
+  border-radius: 3px;
+}
+
+.add-folder-input {
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.new-folder-name-input {
+  font-size: 16px;
+  padding: 5px;
+  border: 0px;
+  border-radius: 0px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  cursor: text;
+}
+
+.add-folder-btn {
+  font-size: 16px;
+  padding: 5px;
+  border: 0px;
+  border-radius: 5px;
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+  cursor: pointer;
+}
+
 .folder-items {
+  padding: 10px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -204,19 +261,28 @@ body {
   margin-right: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
 }
 
-.folder-item i {
+.folder-item:hover {
+  background-color: #dcdcdc;
+  transition: 0.2s ease-in-out;
+}
+
+.folder-item .folder-icon {
   margin-right: 10px;
 }
 
-.folder-name {
-  font-weight: bold;
+.new-folder-section {
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Form for new folder */
-.new-folder-section {
-  margin-top: 20px;
+#new-folder-form {
+  width: 100%;
 }
 
 #select-folders {
@@ -233,4 +299,8 @@ body {
 
 #select-folders option {
   padding: 5px;
+}
+
+.hidden {
+  display: none;
 }
