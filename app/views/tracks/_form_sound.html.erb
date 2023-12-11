@@ -15,6 +15,7 @@
           <%= form.file_field :audio_file, accept: 'audio/mpeg', class: "audio-file-input", id: "file-upload", sound: true %>
         </label>
       </div>
+      <%= form.hidden_field :sound, value: true %>
       <%= form.submit "Add Sound Effect", id: "add-sound-effect-final-btn" %>
     </div>
   </div>
