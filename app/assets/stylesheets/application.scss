@@ -31,19 +31,24 @@ body {
   margin-bottom: 20px;
 
   .track-input {
-    width: 300px;
+    width: 100%;
     padding: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+    flex-direction: column;
     font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border: 0px;
   }
   .add-track-btn,
   .add-sound-effect-btn {
     width: 100%;
     padding: 10px 20px;
     font-size: 16px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -54,6 +59,21 @@ body {
       background-color: #45a049;
     }
   }
+}
+
+.button-container {
+  display: flex;
+  width: 100%;
+}
+
+.form-container {
+  display: none;
+  width: 100%;
+}
+
+#youtube-url-sound-effect-btn:focus + #youtube-url-sound-effect-form,
+#upload-sound-effect-btn:focus + #upload-sound-effect-form {
+  display: block;
 }
 
 /* Track List Styles */
@@ -133,6 +153,9 @@ body {
 
 #sound-effect-options {
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   display: none;
 }
 
@@ -160,10 +183,50 @@ body {
 }
 
 #upload-sound-effect-form {
-  display: none;
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.file-upload {
+  width: 100%;
+  padding: 5px;
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  background-color: #cececf; 
+  border: 0px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+}
+
+.file-upload input[type=file] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-upload:hover {
+  background-color: #d1d8e0;
+  transition: 0.2s ease-in-out;
 }
 
 #add-sound-effect-final-btn {
+  width: 100%;
+  padding: 5px;
+  margin-left: 20px;
+  margin-right: 20px;
+  font-size: 16px;
+  border: 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
   display: none;
 }
 
