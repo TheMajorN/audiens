@@ -1,8 +1,22 @@
 <%= form_with model: @track, url: tracks_path, method: :post, local: true, multipart: true do |form| %>
   <div class="input-section">
-    <%= form.text_field :track_url, placeholder: "Enter YouTube or Spotify URL", class: "track-input" %>
-    <%= form.file_field :audio_file, accept: 'audio/mpeg', class: "audio-file-input" %>
-    <%= form.hidden_field :sound, value: false %>
-    <%= form.submit "Add Track", class: "add-track-btn" %>
+    <button id="add-sound-effect" class="add-sound-effect-btn" type="button">New Track</button>
+    <div id="sound-effect-options" class="flex-container">
+      <div class="button-container">
+        <button id="youtube-url-sound-effect-btn" type="button">Post URL from YouTube</button>
+        <button id="upload-sound-effect-btn" type="button">Upload Your Own</button>
+      </div>
+      <div id="youtube-url-sound-effect-form" class="form-container">
+        <%= form.text_field :track_url, placeholder: "Enter YouTube URL", class: "track-input", sound: true %>
+      </div>
+      <div id="upload-sound-effect-form" class="form-container">
+        <label for="file-upload" class="file-upload">
+          Choose File
+          <%= form.file_field :audio_file, accept: 'audio/mpeg', class: "audio-file-input", id: "file-upload", sound: true %>
+        </label>
+      </div>
+      <%= form.hidden_field :sound, value: false %>
+      <%= form.submit "Add Sound Effect", id: "add-sound-effect-final-btn" %>
+    </div>
   </div>
 <% end %>
