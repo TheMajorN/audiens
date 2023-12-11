@@ -19,8 +19,6 @@ body {
   background-color: rgb(87, 87, 87);
   border-radius: 10px;
   flex: 1;
-  padding-right: 20px;
-  padding-left: 20px;
   margin-right: 5px;
 }
 
@@ -29,8 +27,9 @@ body {
 }
 
 .input-section {
-  margin-top: 20px;
+  width: 100%;
   margin-bottom: 20px;
+
   .track-input {
     width: 300px;
     padding: 10px;
@@ -40,14 +39,18 @@ body {
   }
   .add-track-btn,
   .add-sound-effect-btn {
+    width: 100%;
     padding: 10px 20px;
     font-size: 16px;
-    border-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     background-color: #4CAF50;
     color: white;
     border: none;
     cursor: pointer;
+    transition: 0.2s ease-in-out;
     &:hover {
+      transition: 0.2s ease-in-out;
       background-color: #45a049;
     }
   }
@@ -125,12 +128,48 @@ body {
   background-color: rgb(87, 87, 87);
   border-radius: 10px;
   flex: 1;
-  padding-right: 20px;
-  padding-left: 20px;
   margin-left: 5px;
 }
 
+#sound-effect-options {
+  width: 100%;
+  display: none;
+}
+
+#youtube-url-sound-effect-btn,
+#upload-sound-effect-btn {
+  width: 50%;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  border-radius: 0px;
+  border: none;
+  display: none;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  &:hover {
+    transition: 0.2s ease-in-out;
+    background-color: #45a049;
+  }
+}
+
+#youtube-url-sound-effect-form {
+  display: none;
+}
+
+#upload-sound-effect-form {
+  display: none;
+}
+
+#add-sound-effect-final-btn {
+  display: none;
+}
+
 .sound-effects-grid {
+  margin-right: 20px;
+  margin-left: 20px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust as needed */
   gap: 10px;
@@ -187,6 +226,8 @@ body {
 }
 
 .folders-section {
+  margin-right: 20px;
+  margin-left: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
   border-radius: 5px;
