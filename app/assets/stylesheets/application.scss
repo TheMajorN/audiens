@@ -67,12 +67,16 @@ body {
 }
 
 .form-container {
-  display: none;
   width: 100%;
 }
 
 #youtube-url-sound-effect-btn:focus + #youtube-url-sound-effect-form,
 #upload-sound-effect-btn:focus + #upload-sound-effect-form {
+  display: block;
+}
+
+#youtube-url-track-btn:focus + #youtube-url-track-form,
+#upload-track-btn:focus + #upload-track-form {
   display: block;
 }
 
@@ -158,8 +162,15 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  display: none;
 }
+
+#track-options {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 
 #youtube-url-sound-effect-btn,
 #upload-sound-effect-btn {
@@ -171,7 +182,6 @@ body {
   text-align: center;
   border-radius: 0px;
   border: none;
-  display: none;
   cursor: pointer;
   transition: 0.2s ease-in-out;
   &:hover {
@@ -180,11 +190,32 @@ body {
   }
 }
 
-#youtube-url-sound-effect-form {
-  display: none;
+#youtube-url-track-btn,
+#upload-track-btn {
+  width: 50%;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  border-radius: 0px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  &:hover {
+    transition: 0.2s ease-in-out;
+    background-color: #45a049;
+  }
 }
 
+
 #upload-sound-effect-form {
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+#upload-track-form {
   margin-top: 10px;
   margin-left: 20px;
   margin-right: 20px;
@@ -229,7 +260,17 @@ body {
   border: 0px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  display: none;
+}
+
+#add-track-final-btn {
+  width: 100%;
+  padding: 5px;
+  margin-left: 20px;
+  margin-right: 20px;
+  font-size: 16px;
+  border: 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .sound-effects-grid {
@@ -417,7 +458,7 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .select2-container {

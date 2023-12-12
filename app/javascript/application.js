@@ -170,38 +170,6 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   }
 
-  const toggleDisplay = (element) => {
-    element.style.display = element.style.display === 'none' ? 'flex' : 'none';
-  };
-  
-  const addFolderBar = document.querySelector('.add-folder-bar');
-  const addFolderInput = document.querySelector('.add-folder-input');
-  const addSoundEffectBar = document.getElementById('add-sound-effect');
-  const soundEffectOptions = document.getElementById('sound-effect-options');
-  const youtubeURLButton = document.getElementById('youtube-url-sound-effect-btn');
-  const uploadButton = document.getElementById('upload-sound-effect-btn');
-  const youtubeURLForm = document.getElementById('youtube-url-sound-effect-form');
-  const uploadForm = document.getElementById('upload-sound-effect-form');
-  const addSoundEffectFinalButton = document.getElementById('add-sound-effect-final-btn');
-  
-  addFolderBar.addEventListener('click', () => toggleDisplay(addFolderInput));
-  
-  addSoundEffectBar.addEventListener('click', () => {
-    toggleDisplay(soundEffectOptions);
-    toggleDisplay(youtubeURLButton);
-    toggleDisplay(uploadButton);
-  });
-  
-  youtubeURLButton.addEventListener('click', () => {
-    toggleDisplay(youtubeURLForm);
-    toggleDisplay(addSoundEffectFinalButton);
-  });
-  
-  uploadButton.addEventListener('click', () => {
-    toggleDisplay(uploadForm);
-    toggleDisplay(addSoundEffectFinalButton);
-  });
-
   function createTrackNameSpan(name, trackId) {
     const span = document.createElement('span');
     span.classList.add('track-name');
@@ -209,6 +177,37 @@ document.addEventListener('DOMContentLoaded', function() {
     span.textContent = name;
     return span;
   }
+});
+
+const toggleDisplay = (element) => {
+  element.classList.toggle('hidden');
+};
+
+const addFolderBar = document.querySelector('.add-folder-bar');
+const addFolderInput = document.querySelector('.add-folder-input');
+const addSoundEffectBar = document.getElementById('add-sound-effect');
+const soundEffectOptions = document.getElementById('sound-effect-options');
+const youtubeURLButton = document.getElementById('youtube-url-sound-effect-btn');
+const uploadButton = document.getElementById('upload-sound-effect-btn');
+const youtubeURLForm = document.getElementById('youtube-url-sound-effect-form');
+const uploadForm = document.getElementById('upload-sound-effect-form');
+const addSoundEffectFinalButton = document.getElementById('add-sound-effect-final-btn');
+
+addFolderBar.addEventListener('click', () => toggleDisplay(addFolderInput));
+
+addSoundEffectBar.addEventListener('click', () => {
+  toggleDisplay(addSoundEffectBar);
+  toggleDisplay(soundEffectOptions);
+});
+
+youtubeURLButton.addEventListener('click', () => {
+  toggleDisplay(youtubeURLForm);
+  toggleDisplay(addSoundEffectFinalButton);
+});
+
+uploadButton.addEventListener('click', () => {
+  toggleDisplay(uploadForm);
+  toggleDisplay(addSoundEffectFinalButton);
 });
 
 $(document).ready(function() {
