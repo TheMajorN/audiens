@@ -183,17 +183,30 @@ const toggleDisplay = (element) => {
   element.classList.toggle('hidden');
 };
 
-const addFolderBar = document.querySelector('.add-folder-bar');
-const addFolderInput = document.querySelector('.add-folder-input');
+const addFolderBar = document.getElementById('add-folder-bar');
+const addFolderInput = document.getElementById('add-folder-input');
+
 const addSoundEffectBar = document.getElementById('add-sound-effect');
 const soundEffectOptions = document.getElementById('sound-effect-options');
+const buttonContainer = document.querySelector('.button-container');
 const youtubeURLButton = document.getElementById('youtube-url-sound-effect-btn');
 const uploadButton = document.getElementById('upload-sound-effect-btn');
 const youtubeURLForm = document.getElementById('youtube-url-sound-effect-form');
 const uploadForm = document.getElementById('upload-sound-effect-form');
 const addSoundEffectFinalButton = document.getElementById('add-sound-effect-final-btn');
+const resetSoundEffectsButton = document.getElementById('sound-effect-reset-button');
 
-addFolderBar.addEventListener('click', () => toggleDisplay(addFolderInput));
+function resetSoundEffectCreation() {
+  addSoundEffectBar.classList.remove('hidden');
+  soundEffectOptions.classList.add('hidden');
+  youtubeURLForm.classList.add('hidden');
+  uploadForm.classList.add('hidden');
+  addSoundEffectFinalButton.classList.add('hidden');
+}
+
+addFolderBar.addEventListener('click', () => {
+  toggleDisplay(addFolderInput);
+});
 
 addSoundEffectBar.addEventListener('click', () => {
   toggleDisplay(addSoundEffectBar);
@@ -202,12 +215,73 @@ addSoundEffectBar.addEventListener('click', () => {
 
 youtubeURLButton.addEventListener('click', () => {
   toggleDisplay(youtubeURLForm);
-  toggleDisplay(addSoundEffectFinalButton);
+  if (addSoundEffectFinalButton.classList.contains('hidden')) {
+    toggleDisplay(addSoundEffectFinalButton);
+  }
+  if (!uploadForm.classList.contains('hidden')) {
+    toggleDisplay(uploadForm);
+  }
 });
 
 uploadButton.addEventListener('click', () => {
   toggleDisplay(uploadForm);
-  toggleDisplay(addSoundEffectFinalButton);
+  if (addSoundEffectFinalButton.classList.contains('hidden')) {
+    toggleDisplay(addSoundEffectFinalButton);
+  }
+  if (!youtubeURLForm.classList.contains('hidden')) {
+    toggleDisplay(youtubeURLForm);
+  }
+});
+
+resetSoundEffectsButton.addEventListener('click', () => {
+  resetSoundEffectCreation();
+});
+
+const addTrackBar = document.getElementById('add-track');
+const trackOptions = document.getElementById('track-options');
+const trackButtonContainer = document.querySelector('.button-container');
+const trackYoutubeURLButton = document.getElementById('youtube-url-track-btn');
+const trackUploadButton = document.getElementById('upload-track-btn');
+const trackYoutubeURLForm = document.getElementById('youtube-url-track-form');
+const trackUploadForm = document.getElementById('upload-track-form');
+const addTrackFinalButton = document.getElementById('add-track-final-btn');
+const resetTrackButton = document.getElementById('track-reset-button');
+
+function resetTrackCreation() {
+  addTrackBar.classList.remove('hidden');
+  trackOptions.classList.add('hidden');
+  trackYoutubeURLForm.classList.add('hidden');
+  trackUploadForm.classList.add('hidden');
+  addTrackFinalButton.classList.add('hidden');
+}
+
+addTrackBar.addEventListener('click', () => {
+  toggleDisplay(addTrackBar);
+  toggleDisplay(trackOptions);
+});
+
+trackYoutubeURLButton.addEventListener('click', () => {
+  toggleDisplay(trackYoutubeURLForm);
+  if (addTrackFinalButton.classList.contains('hidden')) {
+    toggleDisplay(addTrackFinalButton);
+  }
+  if (!trackUploadForm.classList.contains('hidden')) {
+    toggleDisplay(trackUploadForm);
+  }
+});
+
+trackUploadButton.addEventListener('click', () => {
+  toggleDisplay(trackUploadForm);
+  if (addTrackFinalButton.classList.contains('hidden')) {
+    toggleDisplay(addTrackFinalButton);
+  }
+  if (!trackYoutubeURLForm.classList.contains('hidden')) {
+    toggleDisplay(trackYoutubeURLForm);
+  }
+});
+
+resetTrackButton.addEventListener('click', () => {
+  resetTrackCreation();
 });
 
 $(document).ready(function() {

@@ -30,18 +30,17 @@ body {
   width: 100%;
   margin-bottom: 20px;
 
-  .track-input {
+  .track-input,
+  .sound-effect-input {
     width: 100%;
     padding: 10px;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 10px;
     flex-direction: column;
     font-size: 16px;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
     border: 0px;
   }
+
   .add-track-btn,
   .add-sound-effect-btn {
     width: 100%;
@@ -62,12 +61,20 @@ body {
 }
 
 .button-container {
+  position: relative;
   display: flex;
   width: 100%;
 }
 
 .form-container {
   width: 100%;
+}
+
+#youtube-url-sound-effect-form,
+#youtube-url-track-form {
+  margin-left: 20px;
+  margin-right: 40px;
+  margin-top: 10px;
 }
 
 #youtube-url-sound-effect-btn:focus + #youtube-url-sound-effect-form,
@@ -157,13 +164,7 @@ body {
   margin-left: 5px;
 }
 
-#sound-effect-options {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
+#sound-effect-options,
 #track-options {
   width: 100%;
   display: flex;
@@ -171,25 +172,8 @@ body {
   flex-wrap: wrap;
 }
 
-
 #youtube-url-sound-effect-btn,
-#upload-sound-effect-btn {
-  width: 50%;
-  font-size: 16px;
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  border-radius: 0px;
-  border: none;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
-  &:hover {
-    transition: 0.2s ease-in-out;
-    background-color: #45a049;
-  }
-}
-
+#upload-sound-effect-btn,
 #youtube-url-track-btn,
 #upload-track-btn {
   width: 50%;
@@ -198,7 +182,6 @@ body {
   color: white;
   padding: 10px 20px;
   text-align: center;
-  border-radius: 0px;
   border: none;
   cursor: pointer;
   transition: 0.2s ease-in-out;
@@ -208,11 +191,14 @@ body {
   }
 }
 
+#youtube-url-sound-effect-btn,
+#youtube-url-track-btn {
+  border-top-left-radius: 10px;
+}
 
-#upload-sound-effect-form {
-  margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 20px;
+#upload-sound-effect-btn,
+#upload-track-btn {
+  border-top-right-radius: 10px;
 }
 
 #upload-track-form {
@@ -221,27 +207,37 @@ body {
   margin-right: 20px;
 }
 
-.file-upload {
+#upload-sound-effect-form {
   width: 100%;
-  padding: 5px;
   margin-top: 10px;
   margin-left: 20px;
   margin-right: 20px;
+  padding: 0;
+}
+
+.file-upload {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  padding: 10px;
+  box-sizing: border-box;
   position: relative;
   overflow: hidden;
-  margin: 0 auto;
   background-color: #cececf; 
   border: 0px;
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
   text-align: center;
-  line-height: 40px;
   cursor: pointer;
   transition: 0.2s ease-in-out;
 }
 
-.file-upload input[type=file] {
+.file-upload input[type="file"] {
+  width: 100%;
+  height: 100%;
   position: absolute;
+  top: 0;
+  left: 0;
   opacity: 0;
   cursor: pointer;
 }
@@ -251,17 +247,35 @@ body {
   transition: 0.2s ease-in-out;
 }
 
-#add-sound-effect-final-btn {
-  width: 100%;
-  padding: 5px;
-  margin-left: 20px;
-  margin-right: 20px;
-  font-size: 16px;
+#sound-effect-reset-button,
+#track-reset-button {
+  position: absolute;
+  padding: 2px;
+  top: 0;
+  left: 50%;
   border: 0px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
+  transform: translateX(-50%);
+  z-index: 1;
+  background-color: #307034;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
 }
 
+#sound-effect-reset-button:hover,
+#track-reset-button {
+  background-color: #5be064;
+  color: black;
+  transition: 0.2s ease-in-out;
+}
+
+#sound-effect-reset-button i,
+#track-reset-button i, {
+  color: white;
+}
+
+#add-sound-effect-final-btn,
 #add-track-final-btn {
   width: 100%;
   padding: 5px;
@@ -340,7 +354,7 @@ body {
   background-color: #696969;
 }
 
-.add-folder-bar {
+#add-folder-bar {
   padding: 10px;
   font-size: 24px;
   display: flex;
@@ -353,19 +367,13 @@ body {
   transition: 0.5s ease-in-out;
 }
 
-.add-folder-bar:hover {
+#add-folder-bar:hover {
   background: #272727;
   transition: 0.5s ease-in-out;
 }
 
 .add-folder-icon {
   width: 100%;
-}
-
-.add-folder-icon i {
-  padding: 3px;
-  background-color: #131313;
-  border-radius: 3px;
 }
 
 .add-folder-input {

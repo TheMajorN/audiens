@@ -3,11 +3,12 @@
     <button id="add-sound-effect" class="add-sound-effect-btn" type="button">New Sound Effect</button>
     <div id="sound-effect-options" class="hidden">
       <div class="button-container">
+        <button id="sound-effect-reset-button" type="button"><i class="fa-solid fa-trash-can-arrow-up"></i></button>
         <button id="youtube-url-sound-effect-btn" type="button">Post URL from YouTube</button>
         <button id="upload-sound-effect-btn" type="button">Upload Your Own</button>
       </div>
       <div id="youtube-url-sound-effect-form" class="form-container hidden">
-        <%= form.text_field :track_url, placeholder: "Enter YouTube URL", class: "track-input" %>
+        <%= form.text_field :track_url, placeholder: "Enter YouTube URL", class: "sound-effect-input" %>
       </div>
       <div id="upload-sound-effect-form" class="form-container hidden">
         <label for="file-upload" class="file-upload">

@@ -87,9 +87,9 @@
       <% end %>
     </div>
     <div class="folders-section">
-      <div class="add-folder-bar">
+      <div id="add-folder-bar">
         <span class="add-folder-icon"><i class="fas fa-plus"></i> New Folder</span>
-        <div class="add-folder-input hidden">
+        <div id="add-folder-input" class="hidden">
           <%= form_with model: @folder, url: folders_path, method: :post, local: true, html: { id: 'new-folder-form' } do |form| %>
             <div class="new-folder-section">
               <%= form.text_field :name, placeholder: "Enter Folder Name", name: 'folder[name]', class: 'new-folder-name-input' %>
