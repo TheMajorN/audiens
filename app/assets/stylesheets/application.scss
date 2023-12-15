@@ -465,6 +465,14 @@ body {
   padding: 5px;
 }
 
+.expandable-menu {
+  display: none;
+}
+
+.sound-effect-item.expanded .expandable-menu {
+  display: block;
+}
+
 .hidden {
   display: none !important;
 }
