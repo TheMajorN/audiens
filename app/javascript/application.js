@@ -205,7 +205,7 @@ function resetSoundEffectCreation() {
 }
 
 addFolderBar.addEventListener('click', () => {
-  toggleDisplay(addFolderInput);
+  addFolderInput.classList.remove('hidden');
 });
 
 addSoundEffectBar.addEventListener('click', () => {

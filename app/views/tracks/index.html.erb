@@ -88,7 +88,7 @@
     </div>
     <div class="folders-section">
       <div id="add-folder-bar">
-        <span class="add-folder-icon"><i class="fas fa-plus"></i> New Folder</span>
+        <span class="add-folder-icon"><i class="fa-solid fa-folder-plus"></i> New Folder</span>
         <div id="add-folder-input" class="hidden">
           <%= form_with model: @folder, url: folders_path, method: :post, local: true, html: { id: 'new-folder-form' } do |form| %>
             <div class="new-folder-section">
@@ -98,14 +98,18 @@
           <% end %>
         </div>
       </div>
-      <div class="folder-items">
-        <% @folders&.each do |folder| %>
-          <div class="folder-item" data-folder-id="<%= folder.id %>">
-            <span class="folder-icon"><i class="fas fa-folder"></i></span>
-            <span class="folder-name"><%= folder.name %></span>
-          </div>
-        <% end %>
-        <button id="reset-folder-filters"><i class="fa-solid fa-filter-circle-xmark"></i></button>
+      <div class="folder-content">
+        <div class="folder-items">
+          <% @folders&.each do |folder| %>
+            <div class="folder-item" data-folder-id="<%= folder.id %>">
+              <span class="folder-icon"><i class="fas fa-folder"></i></span>
+              <span class="folder-name"><%= folder.name %></span>
+            </div>
+          <% end %>
+        </div>
+        <div class="reset-filters-bar">
+          <button id="reset-folder-filters"><i class="fa-solid fa-filter-circle-xmark"></i></button>
+        </div>
       </div>
     </div>
   </div>
