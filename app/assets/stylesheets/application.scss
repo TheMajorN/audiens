@@ -492,12 +492,23 @@ body {
   padding: 5px;
 }
 
-.expandable-menu {
-  display: none;
+.expanded-menu {
+  bottom: 0%;
+  left: 0;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: -20px;
+  background-color: rgb(34, 196, 34); /* Green background */
+  padding: 11px; /* Adjust padding as needed */
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
-
 .sound-effect-item.expanded .expandable-menu {
   display: block;
+}
+
+.expanded {
+  height: 220px;
 }
 
 .hidden {

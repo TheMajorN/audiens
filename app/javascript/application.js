@@ -309,13 +309,6 @@ $(document).ready(function() {
   });
 });
 
-document.querySelectorAll('.expand-button').forEach(button => {
-  button.addEventListener('click', () => {
-    const soundEffectItem = button.closest('.sound-effect-item');
-    soundEffectItem.classList.toggle('expanded');
-  });
-});
-
 function onYouTubeIframeAPIReady() {
   createYouTubePlayers();
 }
