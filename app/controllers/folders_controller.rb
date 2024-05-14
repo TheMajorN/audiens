@@ -15,6 +15,14 @@ class FoldersController < ApplicationController
     end
   end
 
+  def destroy
+    @folder = Folder.find(params[:id])
+    @folder.destroy
+    redirect_to tracks_path
+    format.html { redirect_to tracks_path }
+    format.js
+  end
+
   private
 
   def load_folders

@@ -53,16 +53,16 @@ include TracksHelper
 
   def update
     @track = Track.find(params[:id])
-
+  
     if @track.update(track_params)
-      render json: { status: 'success', message: 'Track name updated successfully' }
+      render json: { status: 'success', message: 'Track folder updated successfully' }
     else
-      render json: { status: 'error', message: 'Failed to update track name' }
+      render json: { status: 'error', message: 'Failed to update track folder' }
     end
   end
 
   def track_params
-    params.require(:track).permit(:name)
+    params.require(:track).permit(:name, :folder_id)
   end
 
   def destroy

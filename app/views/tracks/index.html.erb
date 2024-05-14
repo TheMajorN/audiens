@@ -54,7 +54,7 @@
         <% if track.sound == true %>
           <% video_id = track.source == "youtube" ? extract_youtube_video_id(track.url) : nil %>
           <% audio_file = track.source == "upload" ? url_for(track.audio_file) : nil %>
-          <div class="sound-effect-item expanded">
+          <div class="sound-effect-item" data-folder-id="<%= track.folder_id %>">
             <button id="btn-<%= track.id %>" class="play-btn" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>"><i class="fa-solid fa-play"></i></button>
             <span class="track-name" data-track-id="<%= track.id %>"><%= track.name %></span>
             <% if track.source == "youtube" %>
@@ -74,19 +74,18 @@
                 </audio>
               </div>
             <% end %>
+            <div class="select-btn-container">
+              <%= button_to raw('<i class="fa-regular fa-square-check"></i>'), track_path(track), remote: true, class: 'select-btn', data: { track_id: track.id } %>
+            </div>
             <div class="delete-btn-container">
               <%= button_to raw('<i class="fa-solid danger fa-trash"></i>'), track_path(track), method: :delete, remote: true, class: 'delete-btn', data: { track_id: track.id }, confirm: 'Are you sure?' %>
             </div>
-            <button id="expand-button-<%= track.id %>"><i class="fa-solid fa-angle-down"></i></button>
-            <div id="expanded-menu-<%= track.id %>" class="expanded-menu" data-video-id="<%= track.id %>">
-              <select id="select-folders-<%= track.id %>" class="folder-choice" multiple="multiple" data-track-id="<%= track.id %>">
-                <% @folders&.each do |folder| %>
+            <div class="dropdown-btn-container">
+              <select class="folder-dropdown" data-track-id="<%= track.id %>">
+                <% @folders.each do |folder| %>
                   <option value="<%= folder.id %>"><%= folder.name %></option>
                 <% end %>
-              </select><br>
-              <span>Pitch Shift</span><br>
-              <span>Muffle</span><br>
-              <span>Reverb</span>
+              </select>
             </div>
           </div>
         <% end %>
@@ -110,6 +109,9 @@
             <div class="folder-item" data-folder-id="<%= folder.id %>">
               <span class="folder-icon"><i class="fas fa-folder"></i></span>
               <span class="folder-name"><%= folder.name %></span>
+              <div class="folder-delete-btn-container">
+                <%= button_to raw('<i class="fa-solid danger fa-trash"></i>'), folder_path(folder), method: :delete, remote: true, class: 'folder-delete-btn', data: { folder_id: folder.id }, confirm: 'Are you sure?' %>
+              </div>
             </div>
           <% end %>
         </div>

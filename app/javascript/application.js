@@ -292,20 +292,38 @@ $(document).ready(function() {
     // Hide all sound-effect-items
     $('.sound-effect-item').hide();
 
-    // Show sound-effect-items that have the selected folder-choice
-    $('.sound-effect-item .folder-choice').each(function() {
-      const selectedFolders = $(this).val();
-      if (selectedFolders && selectedFolders.includes(folderId.toString())) {
-        $(this).closest('.sound-effect-item').show();
+    // Show sound-effect-items that belong to the selected folder
+    $('.sound-effect-item').each(function() {
+      const itemFolderId = $(this).data('folder-id');
+      if (itemFolderId && itemFolderId.toString() === folderId.toString()) {
+        $(this).show();
       }
     });
   });
 
   $('#reset-folder-filters').on('click', function() {
-    const folderId = $(this).data('folder-id');
+      // Show all sound-effect-items
+      $('.sound-effect-item').show();
+  });
 
-    // Show all sound-effect-items
-    $('.sound-effect-item').show();
+  $('.folder-dropdown').on('change', function() {
+    // Retrieve the selected folder's ID
+    var folderId = $(this).val();
+    // Retrieve the track's ID associated with the dropdown
+    var trackId = $(this).data('track-id');
+    
+    // Send an AJAX request to update the track's folder_id attribute
+    $.ajax({
+      url: '/tracks/' + trackId,
+      method: 'PATCH', // Use PATCH method for updating records
+      data: { track: { folder_id: folderId } }, // Send the new folder ID in the request body
+      success: function(response) {
+      },
+      error: function(xhr, status, error) {
+        // Handle errors if necessary
+        console.error('Error updating track folder:', error);
+      }
+    });
   });
 });
 

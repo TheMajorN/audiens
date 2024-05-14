@@ -339,6 +339,19 @@ body {
   left: 0;
 }
 
+.sound-effect-item .select-btn-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.sound-effect-item .select-btn-container .select-btn {
+  font-size: 18px;
+  border: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .sound-effect-item .delete-btn-container .delete-btn {
   font-size: 10px;
   border: 0px;
@@ -417,9 +430,9 @@ body {
 }
 
 .folder-item {
+  position: relative;
   width: 29%;
   display: flex;
-  align-items: center;
   margin-right: 2px;
   margin-top: 2px;
   background-color: #f5f5f5;
@@ -444,6 +457,25 @@ body {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.folder-item .folder-delete-btn-container {
+  position: absolute;
+  height: 100%;
+  right: 0;
+  top: 0;
+}
+
+.folder-delete-btn-container .folder-delete-btn {
+  font-size: 28px;
+  border: 0px;
+  cursor: pointer;
+  transition: 0.1s;
+}
+
+.folder-delete-btn-container .folder-delete-btn:hover {
+  background-color: rgb(255, 119, 119);
+  transition: 0.1s;
 }
 
 .new-folder-section {
@@ -490,25 +522,6 @@ body {
 
 #select-folders option {
   padding: 5px;
-}
-
-.expanded-menu {
-  bottom: 0%;
-  left: 0;
-  width: 100%;
-  margin-top: 10px;
-  margin-bottom: -20px;
-  background-color: rgb(34, 196, 34); /* Green background */
-  padding: 11px; /* Adjust padding as needed */
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-.sound-effect-item.expanded .expandable-menu {
-  display: block;
-}
-
-.expanded {
-  height: 220px;
 }
 
 .hidden {
