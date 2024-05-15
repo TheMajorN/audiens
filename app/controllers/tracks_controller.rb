@@ -53,16 +53,20 @@ include TracksHelper
 
   def update
     @track = Track.find(params[:id])
-  
-    if @track.update(track_params)
+    folder_ids = params[:track][:folder_ids]
+    Rails.logger.debug("Received folder_ids: #{folder_ids}") # Debugging line
+
+    if @track.update(folder_ids: folder_ids)
       render json: { status: 'success', message: 'Track folder updated successfully' }
     else
       render json: { status: 'error', message: 'Failed to update track folder' }
     end
   end
 
+  private
+
   def track_params
-    params.require(:track).permit(:name, :folder_id)
+    params.require(:track).permit(:name, folder_ids: [])
   end
 
   def destroy

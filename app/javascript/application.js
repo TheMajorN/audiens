@@ -285,6 +285,27 @@ resetTrackButton.addEventListener('click', () => {
 });
 
 $(document).ready(function() {
+  // Initialize Select2
+  $('.folder-dropdown').select2();
+
+  // Handle folder dropdown change
+  $('.folder-dropdown').on('change', function() {
+    var selectedFolderIds = $(this).val(); // Array of selected folder IDs
+    var trackId = $(this).data('track-id');
+
+    $.ajax({
+      url: '/tracks/' + trackId,
+      method: 'PATCH',
+      data: { track: { folder_ids: selectedFolderIds } },
+      success: function(response) {
+        console.log('Track folders updated successfully!');
+      },
+      error: function(xhr, status, error) {
+        console.error('Error updating track folders:', error);
+      }
+    });
+  });
+
   // Click event for folder items
   $('.folder-item').on('click', function() {
     const folderId = $(this).data('folder-id');
@@ -294,36 +315,16 @@ $(document).ready(function() {
 
     // Show sound-effect-items that belong to the selected folder
     $('.sound-effect-item').each(function() {
-      const itemFolderId = $(this).data('folder-id');
-      if (itemFolderId && itemFolderId.toString() === folderId.toString()) {
+      const itemFolderIds = $(this).data('folder-ids');
+      if (itemFolderIds.includes(folderId.toString())) {
         $(this).show();
       }
     });
   });
 
   $('#reset-folder-filters').on('click', function() {
-      // Show all sound-effect-items
-      $('.sound-effect-item').show();
-  });
-
-  $('.folder-dropdown').on('change', function() {
-    // Retrieve the selected folder's ID
-    var folderId = $(this).val();
-    // Retrieve the track's ID associated with the dropdown
-    var trackId = $(this).data('track-id');
-    
-    // Send an AJAX request to update the track's folder_id attribute
-    $.ajax({
-      url: '/tracks/' + trackId,
-      method: 'PATCH', // Use PATCH method for updating records
-      data: { track: { folder_id: folderId } }, // Send the new folder ID in the request body
-      success: function(response) {
-      },
-      error: function(xhr, status, error) {
-        // Handle errors if necessary
-        console.error('Error updating track folder:', error);
-      }
-    });
+    // Show all sound-effect-items
+    $('.sound-effect-item').show();
   });
 });
 

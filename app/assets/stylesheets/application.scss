@@ -478,6 +478,17 @@ body {
   transition: 0.1s;
 }
 
+.sound-effect-item .dropdown-btn-container {
+  position: absolute;
+  height: 25px;
+  right: 0;
+  bottom: 0;
+}
+
+.sound-effect-item .dropdown-btn-container .folder-dropdown {
+
+}
+
 .new-folder-section {
   width: 100%;
   margin-top: 20px;

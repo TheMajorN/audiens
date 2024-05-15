@@ -54,7 +54,7 @@
         <% if track.sound == true %>
           <% video_id = track.source == "youtube" ? extract_youtube_video_id(track.url) : nil %>
           <% audio_file = track.source == "upload" ? url_for(track.audio_file) : nil %>
-          <div class="sound-effect-item" data-folder-id="<%= track.folder_id %>">
+          <div class="sound-effect-item" data-folder-ids="<%= track.folders.pluck(:id).join(',') %>">
             <button id="btn-<%= track.id %>" class="play-btn" data-video-id="<%= track.id %>" data-video-source="<%= track.source %>"><i class="fa-solid fa-play"></i></button>
             <span class="track-name" data-track-id="<%= track.id %>"><%= track.name %></span>
             <% if track.source == "youtube" %>
@@ -81,9 +81,9 @@
               <%= button_to raw('<i class="fa-solid danger fa-trash"></i>'), track_path(track), method: :delete, remote: true, class: 'delete-btn', data: { track_id: track.id }, confirm: 'Are you sure?' %>
             </div>
             <div class="dropdown-btn-container">
-              <select class="folder-dropdown" data-track-id="<%= track.id %>">
+              <select class="folder-dropdown" data-track-id="<%= track.id %>" multiple="multiple">
                 <% @folders.each do |folder| %>
-                  <option value="<%= folder.id %>"><%= folder.name %></option>
+                  <option value="<%= folder.id %>" <%= 'selected' if track.folders.include?(folder) %>><%= folder.name %></option>
                 <% end %>
               </select>
             </div>

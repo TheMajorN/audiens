@@ -48,6 +48,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_07_053014) do
   create_table "folders_tracks", id: false, force: :cascade do |t|
     t.integer "folder_id", null: false
     t.integer "track_id", null: false
+    t.index ["folder_id", "track_id"], name: "index_folders_tracks_on_folder_id_and_track_id"
+    t.index ["track_id", "folder_id"], name: "index_folders_tracks_on_track_id_and_folder_id"
   end
 
   create_table "playlists", force: :cascade do |t|
