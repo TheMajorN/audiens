@@ -285,12 +285,53 @@ resetTrackButton.addEventListener('click', () => {
 });
 
 $(document).ready(function() {
+  var selectedFolderIds
   // Initialize Select2
   $('.folder-dropdown').select2();
 
+  // Show the dropdown list when the button is clicked
+  $('.dropdown-btn').on('click', function() {
+    $(this).next('.dropdown-list').toggle();
+  });
+
+  // Function to update data-folder-ids attributes
+  function updateDataFolderIds(trackId, selectedFolderIds) {
+    // Find the corresponding sound-effect-items and update their data-folder-ids attributes
+    $('.sound-effect-item').each(function() {
+      const itemTrackId = $(this).data('track-id');
+      if (itemTrackId === trackId) {
+        $(this).attr('data-folder-ids', selectedFolderIds.join(','));
+      }
+    });
+  }
+
+  // Function to update sound-effect-items based on selected folder IDs
+  function updateSoundEffectItems(selectedFolderIds) {
+
+    if (selectedFolderIds && selectedFolderIds.length > 0) {
+      // Hide all sound-effect-items
+      $('.sound-effect-item').hide();
+
+      // Show sound-effect-items that belong to the selected folders
+      $('.sound-effect-item').each(function() {
+        const itemFolderIds = selectedFolderIds;
+        for (let i = 0; i < selectedFolderIds.length; i++) {
+          if (itemFolderIds.includes(selectedFolderIds[i])) {
+            console.log(itemFolderIds)
+            $(this).show();
+            break; // No need to check other selectedFolderIds if one matches
+          }
+        }
+      });
+    } else {
+      // If no folders are selected, show all sound-effect-items
+      $('.sound-effect-item').show();
+    }
+  }
+
   // Handle folder dropdown change
   $('.folder-dropdown').on('change', function() {
-    var selectedFolderIds = $(this).val(); // Array of selected folder IDs
+    selectedFolderIds = $(this).val(); // Array of selected folder IDs
     var trackId = $(this).data('track-id');
 
     $.ajax({
@@ -299,6 +340,10 @@ $(document).ready(function() {
       data: { track: { folder_ids: selectedFolderIds } },
       success: function(response) {
         console.log('Track folders updated successfully!');
+        // Update the data-folder-ids attributes immediately
+        updateDataFolderIds(trackId, selectedFolderIds);
+        // Ensure immediate UI update after AJAX success
+        updateSoundEffectItems(selectedFolderIds);
       },
       error: function(xhr, status, error) {
         console.error('Error updating track folders:', error);
@@ -315,7 +360,7 @@ $(document).ready(function() {
 
     // Show sound-effect-items that belong to the selected folder
     $('.sound-effect-item').each(function() {
-      const itemFolderIds = $(this).data('folder-ids');
+      const itemFolderIds = selectedFolderIds;
       if (itemFolderIds.includes(folderId.toString())) {
         $(this).show();
       }
