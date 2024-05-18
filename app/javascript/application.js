@@ -1,7 +1,3 @@
-//= require jquery
-//= require jquery_ujs
-//= require select2
-
 const players = {};
 const loopStates = {};
 
@@ -284,93 +280,110 @@ resetTrackButton.addEventListener('click', () => {
   resetTrackCreation();
 });
 
-$(document).ready(function() {
-  var selectedFolderIds
-  // Initialize Select2
-  $('.folder-dropdown').select2();
+document.addEventListener('DOMContentLoaded', function() {
+  let selectedFolderIds;
 
-  // Show the dropdown list when the button is clicked
-  $('.dropdown-btn').on('click', function() {
-    $(this).next('.dropdown-list').toggle();
+  new TomSelect(".folder-dropdown",{
+    maxItems: 99
+  });
+
+  // Function to toggle the dropdown list
+  const dropdownButtons = document.querySelectorAll('.dropdown-btn');
+  dropdownButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      const dropdownList = this.nextElementSibling;
+      if (dropdownList.style.display === 'none' || dropdownList.style.display === '') {
+        dropdownList.style.display = 'block';
+      } else {
+        dropdownList.style.display = 'none';
+      }
+    });
+  });
+
+  // Initialize folder dropdowns
+  const folderDropdowns = document.querySelectorAll('.folder-dropdown');
+  folderDropdowns.forEach(function(dropdown) {
+    dropdown.addEventListener('change', function() {
+      selectedFolderIds = Array.from(this.selectedOptions).map(option => option.value);
+      console.log(selectedFolderIds)
+      const trackId = this.dataset.trackId;
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+      fetch(`/tracks/${trackId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken,
+        },
+        body: JSON.stringify({ track: { folder_ids: selectedFolderIds } }),
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        console.log('Track folders updated successfully!');
+        updateDataFolderIds(trackId, selectedFolderIds);
+        updateSoundEffectItems(selectedFolderIds);
+      })
+      .catch(error => {
+        console.error('Error updating track folders:', error);
+      });
+    });
+  });
+
+  // Initialize folder items
+  const folderItems = document.querySelectorAll('.folder-item');
+  folderItems.forEach(function(item) {
+    item.addEventListener('click', function() {
+      const folderId = this.dataset.folderId;
+
+      // Hide all sound-effect-items
+      const soundEffectItems = document.querySelectorAll('.sound-effect-item');
+      soundEffectItems.forEach(function(soundEffectItem) {
+        const itemFolderIds = selectedFolderIds || [];
+        if (itemFolderIds.includes(folderId.toString())) {
+          soundEffectItem.style.display = 'flex';
+        } else {
+          soundEffectItem.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Handle reset folder filters
+  const resetButton = document.getElementById('reset-folder-filters');
+  resetButton.addEventListener('click', function() {
+    const soundEffectItems = document.querySelectorAll('.sound-effect-item');
+    soundEffectItems.forEach(function(soundEffectItem) {
+      soundEffectItem.style.display = 'flex';
+    });
   });
 
   // Function to update data-folder-ids attributes
   function updateDataFolderIds(trackId, selectedFolderIds) {
-    // Find the corresponding sound-effect-items and update their data-folder-ids attributes
-    $('.sound-effect-item').each(function() {
-      const itemTrackId = $(this).data('track-id');
+    const soundEffectItems = document.querySelectorAll('.sound-effect-item');
+    soundEffectItems.forEach(function(item) {
+      const itemTrackId = item.dataset.trackId;
       if (itemTrackId === trackId) {
-        $(this).attr('data-folder-ids', selectedFolderIds.join(','));
+        item.setAttribute('data-folder-ids', selectedFolderIds.join(','));
       }
     });
   }
 
   // Function to update sound-effect-items based on selected folder IDs
   function updateSoundEffectItems(selectedFolderIds) {
-
+    const soundEffectItems = document.querySelectorAll('.sound-effect-item');
     if (selectedFolderIds && selectedFolderIds.length > 0) {
-      // Hide all sound-effect-items
-      $('.sound-effect-item').hide();
-
-      // Show sound-effect-items that belong to the selected folders
-      $('.sound-effect-item').each(function() {
+      soundEffectItems.forEach(function(item) {
         const itemFolderIds = selectedFolderIds;
-        for (let i = 0; i < selectedFolderIds.length; i++) {
-          if (itemFolderIds.includes(selectedFolderIds[i])) {
-            console.log(itemFolderIds)
-            $(this).show();
-            break; // No need to check other selectedFolderIds if one matches
-          }
-        }
+        itemFolderIds.includes(selectedFolderIds.toString()) ? item.style.display = 'block' : item.style.display = 'none';
       });
     } else {
-      // If no folders are selected, show all sound-effect-items
-      $('.sound-effect-item').show();
+      soundEffectItems.forEach(function(item) {
+        item.style.display = 'block';
+      });
     }
   }
-
-  // Handle folder dropdown change
-  $('.folder-dropdown').on('change', function() {
-    selectedFolderIds = $(this).val(); // Array of selected folder IDs
-    var trackId = $(this).data('track-id');
-
-    $.ajax({
-      url: '/tracks/' + trackId,
-      method: 'PATCH',
-      data: { track: { folder_ids: selectedFolderIds } },
-      success: function(response) {
-        console.log('Track folders updated successfully!');
-        // Update the data-folder-ids attributes immediately
-        updateDataFolderIds(trackId, selectedFolderIds);
-        // Ensure immediate UI update after AJAX success
-        updateSoundEffectItems(selectedFolderIds);
-      },
-      error: function(xhr, status, error) {
-        console.error('Error updating track folders:', error);
-      }
-    });
-  });
-
-  // Click event for folder items
-  $('.folder-item').on('click', function() {
-    const folderId = $(this).data('folder-id');
-
-    // Hide all sound-effect-items
-    $('.sound-effect-item').hide();
-
-    // Show sound-effect-items that belong to the selected folder
-    $('.sound-effect-item').each(function() {
-      const itemFolderIds = selectedFolderIds;
-      if (itemFolderIds.includes(folderId.toString())) {
-        $(this).show();
-      }
-    });
-  });
-
-  $('#reset-folder-filters').on('click', function() {
-    // Show all sound-effect-items
-    $('.sound-effect-item').show();
-  });
 });
 
 function onYouTubeIframeAPIReady() {

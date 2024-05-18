@@ -81,9 +81,9 @@
               <%= button_to raw('<i class="fa-solid danger fa-trash"></i>'), track_path(track), method: :delete, remote: true, class: 'delete-btn', data: { track_id: track.id }, confirm: 'Are you sure?' %>
             </div>
             <div class="dropdown-btn-container">
-              <button class="dropdown-btn">Select Folders</button>
+              <button class="dropdown-btn">Group Folders</button>
               <div class="dropdown-list" style="display: none;">
-                <select class="folder-dropdown" data-track-id="<%= track.id %>" multiple="multiple">
+                <select class="folder-dropdown" data-track-id="<%= track.id %>" multiple="multiple" placeholder="Add Folders">
                   <% @folders.each do |folder| %>
                     <option value="<%= folder.id %>" <%= 'selected' if track.folders.include?(folder) %>><%= folder.name %></option>
                   <% end %>

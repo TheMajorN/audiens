@@ -18,9 +18,11 @@ class FoldersController < ApplicationController
   def destroy
     @folder = Folder.find(params[:id])
     @folder.destroy
-    redirect_to tracks_path
-    format.html { redirect_to tracks_path }
-    format.js
+    
+    respond_to do |format|
+      format.html { redirect_to tracks_path, notice: 'Folder was successfully deleted.' }
+      format.js
+    end
   end
 
   private
