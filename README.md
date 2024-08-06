@@ -1,24 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is an application that allows the user to have a comprehensive menu of soundtrack and/or sound effects to use in tandem to create a soundscape.
 
-Things you may want to cover:
+This application allows the following:
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Create a list of audio tracks to play on demand from YouTube, or uploaded files
+* Separate lists for soundscapes and sound effects
+* Grouping folders for sound effects
+* Volume and loop control for all soundtrack audio
+* Easy filtering
